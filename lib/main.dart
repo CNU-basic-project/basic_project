@@ -1,4 +1,5 @@
-import 'package:basicfirebase/auth/page/signup.dart';
+import 'package:basicfirebase/auth/page/sign_in.dart';
+import 'package:basicfirebase/auth/page/sign_up.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: Signup()//MyHomePage(title: 'Firebase Analytics Event', analytics: analytics),
+      home: SignIn()//MyHomePage(title: 'Firebase Analytics Event', analytics: analytics),
     );
   }
 }

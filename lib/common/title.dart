@@ -1,3 +1,4 @@
+import 'package:basicfirebase/common/constant.dart';
 import 'package:flutter/material.dart';
 
 class MyTitle extends StatelessWidget {
@@ -11,7 +12,7 @@ class MyTitle extends StatelessWidget {
     return Text("Blue Ocean", style: TextStyle(
       fontSize: fontSize,
       fontWeight: fontWeight,
-      color: const Color(0xFF0039FF),
+      color: Constant.COLOR,
       fontFamily: "Inria Sans",
     ),);
   }

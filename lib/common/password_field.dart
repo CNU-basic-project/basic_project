@@ -1,29 +1,41 @@
 import 'package:flutter/material.dart';
 
 class PasswordField extends StatefulWidget {
-  const PasswordField({super.key});
+
+  final FormFieldSetter<String> onSaved;
+  final FormFieldSetter<String> onChanged;
+  final String hint;
+
+  const PasswordField({
+    super.key,
+    required this.onSaved,
+    required this.onChanged,
+    this.hint = "비밀번호를 입력하세요"
+  });
 
   @override
   State<PasswordField> createState() => _PasswordFieldState();
 }
 
 class _PasswordFieldState extends State<PasswordField> {
-  bool passwordVisible=false;
+  bool passwordVisible=true;
 
-  @override
-  void initState(){
-    super.initState();
-  }
+  // @override
+  // void initState(){
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-      child: TextField(
+      child: TextFormField(
+        onSaved: widget.onSaved,
+        onChanged: widget.onChanged,
         obscureText: passwordVisible,
         decoration: InputDecoration(
             labelText: "비밀번호",
-            hintText: "비밀번호를 입력하세요",
+            hintText: widget.hint,
             focusedBorder: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(10.0)),
               borderSide: BorderSide(width: 1, color: Colors.deepPurpleAccent),
