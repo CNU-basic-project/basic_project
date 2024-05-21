@@ -111,7 +111,7 @@ class SignUp extends StatelessWidget {
                     ));
                   }
                 },
-                child: const Text("로그인", style: TextStyle(color: Colors.white),),
+                child: const Text("회원가입", style: TextStyle(color: Colors.white),),
               ),
             ],
           ),
