@@ -8,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../common/no_animation_route_button.dart';
-import '../../main.dart';
+import '../../consumer/page/main.dart';
 
 class SignIn extends StatelessWidget {
 
@@ -67,7 +67,7 @@ class SignIn extends StatelessWidget {
                         if (newUser.user != null) {
                           Navigator.pushAndRemoveUntil(
                             context,
-                            NoAnimationRouteBuilder(builder: (context) => MyHomePage(title: 'Firebase Analytics Event', analytics: MyApp.analytics)), (route) => false,
+                            NoAnimationRouteBuilder(builder: (context) => ConsumerMain()), (route) => false,
                           );
                         }
                       } catch (e) {

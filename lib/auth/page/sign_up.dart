@@ -3,12 +3,12 @@ import 'package:basicfirebase/common/no_animation_route_button.dart';
 import 'package:basicfirebase/common/password_field.dart';
 import 'package:basicfirebase/common/text_form_field.dart';
 import 'package:basicfirebase/common/title.dart';
-import 'package:basicfirebase/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../common/constant.dart';
+import '../../consumer/page/main.dart';
 
 class SignUp extends StatelessWidget {
   final _authentication = FirebaseAuth.instance;
@@ -100,7 +100,7 @@ class SignUp extends StatelessWidget {
                     if (newUser.user != null) {
                       Navigator.pushAndRemoveUntil(
                           context,
-                          NoAnimationRouteBuilder(builder: (context) => MyHomePage(title: 'Firebase Analytics Event', analytics: MyApp.analytics)), (route) => false,
+                          NoAnimationRouteBuilder(builder: (context) => ConsumerMain()), (route) => false,
                       );
                     }
                   } catch (e) {
