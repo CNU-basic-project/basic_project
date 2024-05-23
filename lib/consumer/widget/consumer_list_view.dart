@@ -17,31 +17,31 @@ class ConsumerListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: StreamBuilder(
-        stream: _firestore.collection("reservations").snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData == false || snapshot.hasError) {
-            return const CircularProgressIndicator();
-          }
-          var items = snapshot.data!.docs;
-          return ListView.separated(
-            itemCount: items.length,
-            itemBuilder: (BuildContext ctx, int idx) {
-              return ConsumerListTile(
-                  arrivalTime: items[idx]['arrivalTime'],
-                  arrivals: items[idx]['arrivals'],
-                  departureTime: items[idx]['departureTime'],
-                  imagePath: items[idx]['imagePath'],
-                  name: items[idx]['name'],
-                  departures: items[idx]['departures']
-              );
-            },
-            separatorBuilder: (BuildContext ctx, int idx) {
-              return const Divider();
-            },
-          );
-        },
+    return Expanded(
+      child: StreamBuilder(
+          stream: _firestore.collection("reservations").snapshots(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData == false || snapshot.hasError) {
+              return const CircularProgressIndicator();
+            }
+            var items = snapshot.data!.docs;
+            return ListView.separated(
+              itemCount: items.length,
+              itemBuilder: (BuildContext ctx, int idx) {
+                return ConsumerListTile(
+                    arrivalTime: items[idx]['arrivalTime'],
+                    arrivals: items[idx]['arrivals'],
+                    departureTime: items[idx]['departureTime'],
+                    imagePath: items[idx]['imagePath'],
+                    name: items[idx]['name'],
+                    departures: items[idx]['departures']
+                );
+              },
+              separatorBuilder: (BuildContext ctx, int idx) {
+                return const Divider();
+              },
+            );
+          },
       ),
     );
   }

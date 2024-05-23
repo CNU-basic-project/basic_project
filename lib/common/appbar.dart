@@ -12,16 +12,23 @@ class MyAppBar extends StatelessWidget {
     return AppBar(
       leading: IconButton(
           onPressed: () {
-
+            Navigator.maybePop(context);
           },
-          icon: const Icon(Icons.menu),
+          icon: const Icon(Icons.keyboard_backspace),
       ),
       actions: const [
-        MyLogo(size: 40),
+        Icon(Icons.menu),
         SizedBox(width: 10,),
       ],
-      title: const MyTitle(fontSize: 24),
       centerTitle: true,
+      title: const Row(
+        mainAxisSize: MainAxisSize.min,
+       children: [
+         MyLogo(size: 16),
+         SizedBox(width: 5,),
+         MyTitle(fontSize: 24),
+       ],
+      ),
     );
   }
 }
