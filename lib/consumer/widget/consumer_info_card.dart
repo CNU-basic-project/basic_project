@@ -12,6 +12,7 @@ class ConsumerInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Card(
+        color: Colors.white,
         shape: RoundedRectangleBorder(  //모서리를 둥글게 하기 위해 사용
           borderRadius: BorderRadius.circular(16.0),
         ),

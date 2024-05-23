@@ -7,8 +7,33 @@ import '../../common/appbar.dart';
 import '../../common/no_animation_route_button.dart';
 import '../../main.dart';
 
-class ConsumerMain extends StatelessWidget {
+class ConsumerMain extends StatefulWidget {
   const ConsumerMain({super.key});
+
+  @override
+  State<ConsumerMain> createState() => _ConsumerMainState();
+}
+
+class _ConsumerMainState extends State<ConsumerMain> {
+
+  String searchQuery = '';
+
+  void _onChanged(String value) {
+    searchQuery = value;
+  }
+
+  void _onSubmitted(String value) {
+    setState(() {
+      searchQuery = value;
+      _onPressed();
+    });
+  }
+
+  void _onPressed() {
+    setState(() {
+      searchQuery;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,21 +43,25 @@ class ConsumerMain extends StatelessWidget {
           child: MyAppBar()
       ),
       body: Center(
-        child: Column(
+        child: ListView(
           children: [
             const SizedBox(height: 20,),
             ConsumerInfoListView(),
             const SizedBox(height: 20,),
-            SearchField(),
+            SearchField(
+              onPressed: _onPressed,
+              onChanged: _onChanged,
+              onSubmitted: _onSubmitted,
+            ),
             ElevatedButton(onPressed: () {
               Navigator.push(
                 context,
                 NoAnimationRouteBuilder(builder: (context) => MyHomePage(title: 'Firebase Analytics Event', analytics: MyApp.analytics))
               );
             }
-                , child: Icon(Icons.smart_button)),
+                , child: const Icon(Icons.smart_button)),
             const SizedBox(height: 20,),
-            ConsumerListView(),
+            ConsumerListView(searchQuery: searchQuery,),
           ],
         ),
       ),
