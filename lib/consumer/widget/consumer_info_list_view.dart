@@ -13,6 +13,7 @@ class ConsumerInfoListView extends StatelessWidget {
       child: ListView(
         scrollDirection: Axis.horizontal,
         children: [
+          // TODO more detail
           ConsumerInfoCard(child: Image.asset("assets/info.png", width: 300,)),
           ConsumerInfoCard(child: Image.asset("assets/info.png", width: 300,)),
           ConsumerInfoCard(child: Image.asset("assets/info.png", width: 300,)),

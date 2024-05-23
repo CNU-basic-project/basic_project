@@ -36,6 +36,7 @@ class ConsumerListTile extends StatelessWidget {
     return SizedBox(
       height: 100,
       child: ListTile(
+        // TODO onTap -> detail Page
         visualDensity: const VisualDensity(vertical: 3),
         leading: Container(
           width: 100.0,
