@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class ConsumerListTile extends StatelessWidget {
   const ConsumerListTile({
     super.key,
+    required this.date,
     required this.arrivalTime,
     required this.arrivals,
     required this.departureTime,
@@ -11,7 +12,7 @@ class ConsumerListTile extends StatelessWidget {
     required this.departures,
   });
 
-  final String imagePath, arrivalTime, arrivals, departureTime, departures, name;
+  final String imagePath, arrivalTime, arrivals, departureTime, departures, name, date;
 
   ImageProvider<Object> getImage(String? imagePath) {
     if (imagePath != null && imagePath.length > 10) {
@@ -20,8 +21,18 @@ class ConsumerListTile extends StatelessWidget {
     return const AssetImage('assets/ship.jpg');
   }
 
+  String convertDateFormat() {
+    // date == "2024-05-29 09:30:00.000"
+    List<String> s = date.split(" ")[0].split("-");
+    if (s[1][0] == "0") s[1] = s[1][1];
+    return "${s[1]}월 ${s[2]}일";
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    String date = convertDateFormat();
+
     return SizedBox(
       height: 100,
       child: ListTile(
@@ -41,7 +52,7 @@ class ConsumerListTile extends StatelessWidget {
         title: Text(name,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
-        subtitle: Text("$departureTime ~ $arrivalTime \n$arrivals -> $departures",
+        subtitle: Text("$date $departureTime ~ $arrivalTime \n$arrivals -> $departures",
           style: const TextStyle(fontSize: 16),
         ),
         trailing: const Text("trailing"),

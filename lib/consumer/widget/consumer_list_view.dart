@@ -7,10 +7,11 @@ class ConsumerListView extends StatelessWidget {
   ConsumerListView({
     super.key,
     this.searchQuery = '',
+    this.dateQuery = '',
   });
 
   static const checkField = ["name", "departures", "arrivals"];
-  final String searchQuery;
+  final String searchQuery, dateQuery;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
@@ -26,6 +27,7 @@ class ConsumerListView extends StatelessWidget {
 
             List<dynamic> items = snapshot.data!.docs;
             items = items.where((element) {
+              if (dateQuery != '' && element['date'].toString() != dateQuery) return false;
               for (String field in checkField) {
                 if (element[field].toString().contains(searchQuery)) return true;
               }
@@ -36,6 +38,7 @@ class ConsumerListView extends StatelessWidget {
               itemCount: items.length,
               itemBuilder: (BuildContext ctx, int idx) {
                 return ConsumerListTile(
+                    date: items[idx]['date'],
                     arrivalTime: items[idx]['arrivalTime'],
                     arrivals: items[idx]['arrivals'],
                     departureTime: items[idx]['departureTime'],

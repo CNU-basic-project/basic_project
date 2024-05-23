@@ -45,22 +45,40 @@ class _ConsumerMainState extends State<ConsumerMain> {
       body: Center(
         child: ListView(
           children: [
-            const SizedBox(height: 20,),
+            const SizedBox(height: 10,),
             ConsumerInfoListView(),
-            const SizedBox(height: 20,),
-            SearchField(
-              onPressed: _onPressed,
-              onChanged: _onChanged,
-              onSubmitted: _onSubmitted,
+            const SizedBox(height: 10,),
+            Center(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const SizedBox(width: 20,),
+                  SearchField(
+                    onPressed: _onPressed,
+                    onChanged: _onChanged,
+                    onSubmitted: _onSubmitted,
+                  ),
+                  const SizedBox(width: 10,),
+                  IconButton(
+                      onPressed: () {
+                        showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(2050))
+                          .then((selectedDate) {
+
+                          });
+                      },
+                      icon: const Icon(Icons.date_range, color: Colors.deepPurple, size: 30,)
+                  ),
+                ],
+              ),
             ),
-            ElevatedButton(onPressed: () {
-              Navigator.push(
-                context,
-                NoAnimationRouteBuilder(builder: (context) => MyHomePage(title: 'Firebase Analytics Event', analytics: MyApp.analytics))
-              );
-            }
-                , child: const Icon(Icons.smart_button)),
-            const SizedBox(height: 20,),
+            // ElevatedButton(onPressed: () {
+            //   Navigator.push(
+            //     context,
+            //     NoAnimationRouteBuilder(builder: (context) => MyHomePage(title: 'Firebase Analytics Event', analytics: MyApp.analytics))
+            //   );
+            // }
+            //     , child: const Icon(Icons.smart_button)),
+            const SizedBox(height: 10,),
             ConsumerListView(searchQuery: searchQuery,),
           ],
         ),

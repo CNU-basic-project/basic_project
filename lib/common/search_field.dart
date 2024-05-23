@@ -15,8 +15,9 @@ class SearchField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+    return SizedBox(
+      width: 300,
+      height: 50,
       child: SearchBar(
         onSubmitted: onSubmitted,
         onChanged: onChanged,
