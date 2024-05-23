@@ -17,6 +17,7 @@ class ConsumerMain extends StatefulWidget {
 class _ConsumerMainState extends State<ConsumerMain> {
 
   String searchQuery = '';
+  DateTime? selectedDate;
 
   void _onChanged(String value) {
     searchQuery = value;
@@ -61,9 +62,11 @@ class _ConsumerMainState extends State<ConsumerMain> {
                   const SizedBox(width: 10,),
                   IconButton(
                       onPressed: () {
-                        showDatePicker(context: context, initialDate: DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(2050))
-                          .then((selectedDate) {
-
+                        showDatePicker(context: context, initialDate: selectedDate ?? DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(2050))
+                          .then((selected) {
+                            setState(() {
+                              selectedDate = selected;
+                            });
                           });
                       },
                       icon: const Icon(Icons.date_range, color: Colors.deepPurple, size: 30,)
@@ -79,7 +82,7 @@ class _ConsumerMainState extends State<ConsumerMain> {
             // }
             //     , child: const Icon(Icons.smart_button)),
             const SizedBox(height: 10,),
-            ConsumerListView(searchQuery: searchQuery,),
+            ConsumerListView(searchQuery: searchQuery, dateQuery: selectedDate,),
           ],
         ),
       ),

@@ -6,16 +6,18 @@ import 'package:flutter/material.dart';
 class ConsumerListView extends StatelessWidget {
   ConsumerListView({
     super.key,
-    this.searchQuery = '',
-    this.dateQuery = '',
+    required this.searchQuery,
+    required this.dateQuery,
   });
 
   static const checkField = ["name", "departures", "arrivals"];
-  final String searchQuery, dateQuery;
+  final String searchQuery;
+  final DateTime? dateQuery;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
+
     return SizedBox(
       height: MediaQuery.of(context).size.height - ConsumerInfoListView.HEIGHT - 20,
       child: FutureBuilder(
@@ -27,9 +29,14 @@ class ConsumerListView extends StatelessWidget {
 
             List<dynamic> items = snapshot.data!.docs;
             items = items.where((element) {
-              if (dateQuery != '' && element['date'].toString() != dateQuery) return false;
+              if (dateQuery != null) { // 날짜 검색을 한다면
+                String elementDate = element['date'].toString().split(" ")[0];
+                String dateQueryDate = dateQuery.toString().split(" ")[0];
+                if (dateQueryDate != elementDate) return false; // 날짜가 같지 않으면 false
+              }
+
               for (String field in checkField) {
-                if (element[field].toString().contains(searchQuery)) return true;
+                if (element[field].toString().contains(searchQuery)) return true; // 검색 확인
               }
               return false;
             }).toList();
