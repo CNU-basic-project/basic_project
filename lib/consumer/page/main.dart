@@ -1,8 +1,13 @@
+import 'dart:math';
+
 import 'package:basicfirebase/common/search_field.dart';
 import 'package:basicfirebase/consumer/widget/main_info_list_view.dart';
 import 'package:basicfirebase/consumer/widget/main_list_view.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../auth/page/sign_in.dart';
 import '../../common/appbar.dart';
 import '../../common/no_animation_route_button.dart';
 import '../../main.dart';
@@ -15,6 +20,36 @@ class ConsumerMain extends StatefulWidget {
 }
 
 class _ConsumerMainState extends State<ConsumerMain> {
+
+  final _authentication = FirebaseAuth.instance;
+  User? loggedUser;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getCurrentUser();
+  }
+
+  void getCurrentUser() {
+    try {
+      final user = _authentication.currentUser;
+      if (user != null) loggedUser = user;
+    } catch (e) {
+      print("ERROR");
+    }
+  }
+
+  List<Widget> getReservations() {
+    List<Widget> widgets = [];
+    if (loggedUser == null) return widgets;
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    var userData = _firestore.collection("user").doc(loggedUser!.uid).get();
+    userData.then((e) {
+      print(e.data()?['reservations']);
+    });
+    return widgets;
+  }
 
   String searchQuery = '';
   DateTime? selectedDate;
@@ -38,6 +73,9 @@ class _ConsumerMainState extends State<ConsumerMain> {
 
   @override
   Widget build(BuildContext context) {
+
+    getReservations();
+
     return Scaffold(
       appBar: const PreferredSize(
           preferredSize: Size.fromHeight(preferredSize),
@@ -74,13 +112,6 @@ class _ConsumerMainState extends State<ConsumerMain> {
                 ],
               ),
             ),
-            // ElevatedButton(onPressed: () {
-            //   Navigator.push(
-            //     context,
-            //     NoAnimationRouteBuilder(builder: (context) => MyHomePage(title: 'Firebase Analytics Event', analytics: MyApp.analytics))
-            //   );
-            // }
-            //     , child: const Icon(Icons.smart_button)),
             const SizedBox(height: 10,),
             ConsumerListView(searchQuery: searchQuery, dateQuery: selectedDate,),
           ],

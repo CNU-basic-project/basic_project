@@ -1,6 +1,8 @@
+import 'package:basicfirebase/common/no_animation_route_button.dart';
 import 'package:flutter/material.dart';
 
 import '../domain/ship.dart';
+import '../page/ship_info.dart';
 
 class ConsumerListTile extends StatelessWidget {
   const ConsumerListTile({
@@ -32,7 +34,12 @@ class ConsumerListTile extends StatelessWidget {
     return SizedBox(
       height: 100,
       child: ListTile(
-        // TODO onTap -> detail Page
+        onTap: () {
+          Navigator.push(
+            context,
+            NoAnimationRouteBuilder(builder: (context) => ConsumerShipInfo(ship: ship))
+          );
+        },
         visualDensity: const VisualDensity(vertical: 3),
         leading: Container(
           width: 100.0,
@@ -49,7 +56,7 @@ class ConsumerListTile extends StatelessWidget {
         title: Text(ship.name,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
-        subtitle: Text("$date $ship.departureTime ~ $ship.arrivalTime \n$ship.arrivals -> $ship.departures",
+        subtitle: Text("$date ${ship.departureTime} ~ ${ship.arrivalTime} \n${ship.departures} -> ${ship.arrivals}",
           style: const TextStyle(fontSize: 16),
         ),
         trailing: const Text("trailing"),

@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: SafeArea(child: ConsumerMain())
+      home: SafeArea(child: SignIn())
         // SignIn()
       // MyHomePage(title: 'Firebase Analytics Event', analytics: MyApp.analytics),
     );

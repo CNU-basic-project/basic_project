@@ -3,6 +3,7 @@ import 'package:basicfirebase/common/no_animation_route_button.dart';
 import 'package:basicfirebase/common/password_field.dart';
 import 'package:basicfirebase/common/text_form_field.dart';
 import 'package:basicfirebase/common/title.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -96,6 +97,11 @@ class SignUp extends StatelessWidget {
                     final UserCredential newUser =
                         await _authentication.createUserWithEmailAndPassword(
                             email: userEmail, password: userPassword);
+
+                    await FirebaseFirestore.instance
+                        .collection('user')
+                        .doc(newUser.user!.uid)
+                        .set({'userName': userName, 'email': userEmail, 'profile': ''});
 
                     if (newUser.user != null) {
                       Navigator.pushAndRemoveUntil(
