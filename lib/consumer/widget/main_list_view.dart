@@ -3,6 +3,8 @@ import 'package:basicfirebase/consumer/widget/main_list_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../domain/ship.dart';
+
 class ConsumerListView extends StatelessWidget {
   ConsumerListView({
     super.key,
@@ -27,8 +29,8 @@ class ConsumerListView extends StatelessWidget {
               return const CircularProgressIndicator();
             }
 
-            List<dynamic> items = snapshot.data!.docs;
-            items = items.where((element) {
+            List<dynamic> tempItems = snapshot.data!.docs;
+            List<Ship> items = tempItems.where((element) {
               if (dateQuery != null) { // 날짜 검색을 한다면
                 String elementDate = element['date'].toString().split(" ")[0];
                 String dateQueryDate = dateQuery.toString().split(" ")[0];
@@ -39,19 +41,13 @@ class ConsumerListView extends StatelessWidget {
                 if (element[field].toString().contains(searchQuery)) return true; // 검색 확인
               }
               return false;
-            }).toList();
+            }).map((e) => Ship.fromJson(e.data())).toList();
 
             return ListView.separated(
               itemCount: items.length,
               itemBuilder: (BuildContext ctx, int idx) {
                 return ConsumerListTile(
-                    date: items[idx]['date'],
-                    arrivalTime: items[idx]['arrivalTime'],
-                    arrivals: items[idx]['arrivals'],
-                    departureTime: items[idx]['departureTime'],
-                    imagePath: items[idx]['imagePath'],
-                    name: items[idx]['name'],
-                    departures: items[idx]['departures']
+                  ship: items[idx],
                 );
               },
               separatorBuilder: (BuildContext ctx, int idx) {

@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../domain/ship.dart';
+
 class ConsumerListTile extends StatelessWidget {
   const ConsumerListTile({
     super.key,
-    required this.date,
-    required this.arrivalTime,
-    required this.arrivals,
-    required this.departureTime,
-    required this.imagePath,
-    required this.name,
-    required this.departures,
+    required this.ship
   });
 
-  final String imagePath, arrivalTime, arrivals, departureTime, departures, name, date;
+  final Ship ship;
 
   ImageProvider<Object> getImage(String? imagePath) {
     if (imagePath != null && imagePath.length > 10) {
@@ -23,7 +19,7 @@ class ConsumerListTile extends StatelessWidget {
 
   String convertDateFormat() {
     // date == "2024-05-29 09:30:00.000"
-    List<String> s = date.split(" ")[0].split("-");
+    List<String> s = ship.date.split(" ")[0].split("-");
     if (s[1][0] == "0") s[1] = s[1][1];
     return "${s[1]}월 ${s[2]}일";
   }
@@ -46,14 +42,14 @@ class ConsumerListTile extends StatelessWidget {
               border: Border.all(color: Colors.black, width: 0.5),
               image: DecorationImage(
                   fit: BoxFit.fill,
-                  image: getImage(imagePath)
+                  image: getImage(ship.imagePath)
               )
           ),
         ),
-        title: Text(name,
+        title: Text(ship.name,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
-        subtitle: Text("$date $departureTime ~ $arrivalTime \n$arrivals -> $departures",
+        subtitle: Text("$date $ship.departureTime ~ $ship.arrivalTime \n$ship.arrivals -> $ship.departures",
           style: const TextStyle(fontSize: 16),
         ),
         trailing: const Text("trailing"),
