@@ -1,6 +1,6 @@
 import 'package:basicfirebase/common/search_field.dart';
-import 'package:basicfirebase/consumer/widget/consumer_info_list_view.dart';
-import 'package:basicfirebase/consumer/widget/consumer_list_view.dart';
+import 'package:basicfirebase/consumer/widget/main_info_list_view.dart';
+import 'package:basicfirebase/consumer/widget/main_list_view.dart';
 import 'package:flutter/material.dart';
 
 import '../../common/appbar.dart';

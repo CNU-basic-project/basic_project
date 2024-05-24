@@ -1,7 +1,7 @@
 import 'package:basicfirebase/auth/page/sign_in.dart';
 import 'package:basicfirebase/auth/page/sign_up.dart';
 import 'package:basicfirebase/consumer/page/main.dart';
-import 'package:basicfirebase/consumer/widget/consumer_list_view.dart';
+import 'package:basicfirebase/consumer/widget/main_list_view.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';

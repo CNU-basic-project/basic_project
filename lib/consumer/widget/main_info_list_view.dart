@@ -1,4 +1,4 @@
-import 'package:basicfirebase/consumer/widget/consumer_info_card.dart';
+import 'package:basicfirebase/consumer/widget/main_info_card.dart';
 import 'package:flutter/material.dart';
 
 class ConsumerInfoListView extends StatelessWidget {

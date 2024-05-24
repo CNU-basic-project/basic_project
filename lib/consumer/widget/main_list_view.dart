@@ -1,5 +1,5 @@
-import 'package:basicfirebase/consumer/widget/consumer_info_list_view.dart';
-import 'package:basicfirebase/consumer/widget/consumer_list_tile.dart';
+import 'package:basicfirebase/consumer/widget/main_info_list_view.dart';
+import 'package:basicfirebase/consumer/widget/main_list_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
