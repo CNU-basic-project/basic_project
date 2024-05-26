@@ -17,9 +17,9 @@ class Ship {
     required this.price,
   });
 
-  factory Ship.fromJson(Map<String, dynamic> json) {
+  factory Ship.fromJson(Map<String, dynamic> json, String doc) {
     return Ship(
-      uid: json['uid'],
+      uid: doc,
       date: json['date'],
       arrivals: json['arrivals'],
       arrivalTime: json['arrivalTime'],

@@ -17,6 +17,23 @@ class ConsumerListView extends StatelessWidget {
   final DateTime? dateQuery;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
+  List<Ship> _filterData(AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
+    // TODO docs name
+    List<dynamic> tempItems = snapshot.data!.docs;
+    List<Ship> items = tempItems.where((element) {
+      if (dateQuery != null) { // 날짜 검색을 한다면
+        String elementDate = element['date'].toString().split(" ")[0];
+        String dateQueryDate = dateQuery.toString().split(" ")[0];
+        if (dateQueryDate != elementDate) return false; // 날짜가 같지 않으면 false
+      }
+      for (String field in checkField) {
+        if (element[field].toString().contains(searchQuery)) return true; // 검색 확인
+      }
+      return false;
+    }).map((e) => Ship.fromJson(e.data(), e.id)).toList();
+    return items;
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -29,19 +46,7 @@ class ConsumerListView extends StatelessWidget {
               return const CircularProgressIndicator();
             }
 
-            List<dynamic> tempItems = snapshot.data!.docs;
-            List<Ship> items = tempItems.where((element) {
-              if (dateQuery != null) { // 날짜 검색을 한다면
-                String elementDate = element['date'].toString().split(" ")[0];
-                String dateQueryDate = dateQuery.toString().split(" ")[0];
-                if (dateQueryDate != elementDate) return false; // 날짜가 같지 않으면 false
-              }
-
-              for (String field in checkField) {
-                if (element[field].toString().contains(searchQuery)) return true; // 검색 확인
-              }
-              return false;
-            }).map((e) => Ship.fromJson(e.data())).toList();
+            List<Ship> items = _filterData(snapshot);
 
             return ListView.separated(
               itemCount: items.length,

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:basicfirebase/common/search_field.dart';
 import 'package:basicfirebase/consumer/widget/main_info_list_view.dart';
 import 'package:basicfirebase/consumer/widget/main_list_view.dart';
@@ -17,7 +15,7 @@ class ConsumerMain extends StatefulWidget {
 
   @override
   State<ConsumerMain> createState() => _ConsumerMainState();
-}
+}~
 
 class _ConsumerMainState extends State<ConsumerMain> {
 
@@ -46,6 +44,7 @@ class _ConsumerMainState extends State<ConsumerMain> {
     final FirebaseFirestore _firestore = FirebaseFirestore.instance;
     var userData = _firestore.collection("user").doc(loggedUser!.uid).get();
     userData.then((e) {
+      // TODO user reservations
       print(e.data()?['reservations']);
     });
     return widgets;

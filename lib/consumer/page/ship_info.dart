@@ -77,6 +77,7 @@ class ConsumerShipInfo extends StatelessWidget {
                       context: context,
                       builder: (ctx) {
                         return AlertDialog(
+                          // TODO 예약
                           content: Text("${ship.name}의 예약이 완료됐습니다."),
                           actions: [
                             Center(
