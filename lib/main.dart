@@ -1,13 +1,12 @@
 import 'package:basicfirebase/auth/page/sign_in.dart';
-import 'package:basicfirebase/auth/page/sign_up.dart';
 import 'package:basicfirebase/consumer/page/main.dart';
-import 'package:basicfirebase/consumer/widget/main_list_view.dart';
+import 'package:basicfirebase/provider/firebase_provider.dart';
+import 'package:basicfirebase/repository/firebase_repository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'common/appbar.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -15,40 +14,40 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(MyApp());
+  runApp(MultiProvider(
+    providers: [
+      Provider<FirebaseRepository>(
+        create: (context) => FirebaseRepository(
+          firebaseFirestore: FirebaseFirestore.instance,
+          firebaseAuth: FirebaseAuth.instance,
+        ),
+      ),
+      ChangeNotifierProvider<FirebaseProvider>(
+          create: (context) => FirebaseProvider(
+              firebaseRepository: context.read<FirebaseRepository>()
+          )
+      ),
+    ],
+    child: MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: SafeArea(
+          child: Main()
+      ),
+    ),
+  ));
 }
 
-class MyApp extends StatelessWidget {
-  MyApp({super.key});
 
-  final _authentication = FirebaseAuth.instance;
-  User? loggedUser;
-
-  void getCurrentUser() {
-    try {
-      final user = _authentication.currentUser;
-      if (user != null) loggedUser = user;
-    } catch (e) {
-      print("ERROR");
-    }
-  }
+class Main extends StatelessWidget {
+  Main({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final FirebaseProvider firebaseProvider = context.watch<FirebaseProvider>();
 
-    getCurrentUser();
-
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: SafeArea(
-          child: loggedUser == null ? SignIn() : ConsumerMain(),
-      )
-        // SignIn()
-    );
+    if (firebaseProvider.getUser() == null) {
+      return SignIn();
+    }
+    return ConsumerMain();
   }
 }

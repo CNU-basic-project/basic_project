@@ -7,12 +7,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
 
 import '../../common/constant.dart';
 import '../../consumer/page/main.dart';
+import '../../repository/firebase_repository.dart';
 
 class SignUp extends StatelessWidget {
-  final _authentication = FirebaseAuth.instance;
+
+  late final FirebaseAuth _authentication;
 
   String userName = '';
   String userEmail = '';
@@ -21,8 +24,20 @@ class SignUp extends StatelessWidget {
 
   SignUp({super.key});
 
+  void _setInstance(BuildContext context) {
+    _authentication = context.read<FirebaseRepository>().firebaseAuth;
+  }
+
+  bool _validate() {
+    if (userPassword == userPasswordCheck) return true;
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    _setInstance(context);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(
@@ -94,6 +109,8 @@ class SignUp extends StatelessWidget {
                 ),
                 onPressed: () async {
                   try {
+                    if (!_validate()) throw Error();
+
                     final UserCredential newUser =
                         await _authentication.createUserWithEmailAndPassword(
                             email: userEmail, password: userPassword);
@@ -110,7 +127,6 @@ class SignUp extends StatelessWidget {
                       );
                     }
                   } catch (e) {
-                    print(e);
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text("이메일과 비밀번호를 확인하세요."),
                       backgroundColor: Colors.blue,

@@ -4,23 +4,32 @@ import 'package:basicfirebase/common/logo.dart';
 import 'package:basicfirebase/common/password_field.dart';
 import 'package:basicfirebase/common/text_form_field.dart';
 import 'package:basicfirebase/common/title.dart';
+import 'package:basicfirebase/repository/firebase_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../common/no_animation_route_button.dart';
 import '../../consumer/page/main.dart';
 
 class SignIn extends StatelessWidget {
 
-  final _authentication = FirebaseAuth.instance;
+  late final FirebaseAuth _authentication;
 
   String userEmail = '';
   String userPassword = '';
 
   SignIn({super.key});
 
+  void _setInstance(BuildContext context) {
+    _authentication = context.read<FirebaseRepository>().firebaseAuth;
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    _setInstance(context);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Center(

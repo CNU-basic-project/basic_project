@@ -15,28 +15,11 @@ class ConsumerMain extends StatefulWidget {
 
   @override
   State<ConsumerMain> createState() => _ConsumerMainState();
-}~
+}
 
 class _ConsumerMainState extends State<ConsumerMain> {
 
-  final _authentication = FirebaseAuth.instance;
-  User? loggedUser;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    getCurrentUser();
-  }
-
-  void getCurrentUser() {
-    try {
-      final user = _authentication.currentUser;
-      if (user != null) loggedUser = user;
-    } catch (e) {
-      print("ERROR");
-    }
-  }
+  User? user;
 
   List<Widget> getReservations() {
     List<Widget> widgets = [];
@@ -119,3 +102,5 @@ class _ConsumerMainState extends State<ConsumerMain> {
     );
   }
 }
+
+// --web-renderer html
