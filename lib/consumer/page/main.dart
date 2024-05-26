@@ -1,9 +1,11 @@
 import 'package:basicfirebase/common/search_field.dart';
 import 'package:basicfirebase/consumer/widget/main_info_list_view.dart';
 import 'package:basicfirebase/consumer/widget/main_list_view.dart';
+import 'package:basicfirebase/repository/firebase_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../auth/page/sign_in.dart';
 import '../../common/appbar.dart';
@@ -19,13 +21,19 @@ class ConsumerMain extends StatefulWidget {
 
 class _ConsumerMainState extends State<ConsumerMain> {
 
-  User? user;
+  late final FirebaseFirestore _firestore;
+  late final User? _user;
 
-  List<Widget> getReservations() {
+  void getUser(BuildContext context) {
+    _user = context.read<FirebaseRepository>().getUser();
+  }
+
+  List<Widget> getReservations(BuildContext context) {
+    _firestore = context.read<FirebaseRepository>().firebaseFirestore;
+
     List<Widget> widgets = [];
-    if (loggedUser == null) return widgets;
-    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-    var userData = _firestore.collection("user").doc(loggedUser!.uid).get();
+    if (_user == null) return widgets;
+    var userData = _firestore.collection("user").doc(_user.uid).get();
     userData.then((e) {
       // TODO user reservations
       print(e.data()?['reservations']);
@@ -56,7 +64,8 @@ class _ConsumerMainState extends State<ConsumerMain> {
   @override
   Widget build(BuildContext context) {
 
-    getReservations();
+    getUser(context);
+    getReservations(context);
 
     return Scaffold(
       appBar: const PreferredSize(
