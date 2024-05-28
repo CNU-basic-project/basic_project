@@ -1,36 +1,37 @@
 import 'package:basicfirebase/consumer/widget/ship_info_tile.dart';
+import 'package:basicfirebase/provider/service_provider.dart';
+import 'package:basicfirebase/provider/token_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../../common/appbar.dart';
 import '../../common/constant.dart';
-import '../../domain/ship.dart';
+import '../../domain/departure.dart';
 import '../widget/main_info_card.dart';
 
-class ConsumerShipInfo extends StatelessWidget {
-  const ConsumerShipInfo({
+class ConsumerDepartureInfo extends StatelessWidget {
+
+  final Departure departure;
+
+  ConsumerDepartureInfo({
     super.key,
-    required this.ship
+    required this.departure
   });
 
-  final Ship ship;
-
-  ImageProvider<Object> getImage(String? imagePath) {
-    if (imagePath != null && imagePath.length > 10) {
-      return NetworkImage(imagePath);
-    }
-    return const AssetImage('assets/ship.jpg');
-  }
+  late TokenProvider tokenProvider;
+  late ServiceProvider serviceProvider;
 
   String convertDateFormat() {
     // date == "2024-05-29 09:30:00.000"
-    List<String> s = ship.date.split(" ")[0].split("-");
-    if (s[1][0] == "0") s[1] = s[1][1];
-    return "${s[1]}월 ${s[2]}일";
+    return DateFormat('MM월 dd일').format(departure.date);
   }
 
   @override
   Widget build(BuildContext context) {
+
+    tokenProvider = context.read<TokenProvider>();
+    serviceProvider = context.read<ServiceProvider>();
 
     String date = convertDateFormat();
     var f = NumberFormat.currency(locale: "ko_KR", symbol: "￦");
@@ -47,7 +48,7 @@ class ConsumerShipInfo extends StatelessWidget {
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16.0),
                   child: Image(
-                    image: getImage(ship.imagePath),
+                    image: serviceProvider.getImage(departure.ship.imagePath),
                     height: 200,
                     fit: BoxFit.cover,
                   ),
@@ -56,15 +57,15 @@ class ConsumerShipInfo extends StatelessWidget {
               const SizedBox(height: 10,),
               Center(
                 child: Text(
-                  ship.name,
+                  departure.ship.name,
                   style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
                 ),
               ),
               const SizedBox(height: 10,),
-              ConsumerShipInfoTile(title: "운행 시간", trailing: "$date ${ship.departureTime} ~ ${ship.arrivalTime}"),
-              ConsumerShipInfoTile(title: "운행 경로", trailing: "${ship.arrivals} -> ${ship.departures}"),
-              ConsumerShipInfoTile(title: "남은 좌석", trailing: "${ship.seat} / ${ship.maxSeat}"),
-              ConsumerShipInfoTile(title: "가격 (1매)", trailing: f.format(ship.price)),
+              ConsumerShipInfoTile(title: "운행 시간", trailing: "$date ${departure.departureTime} ~ ${departure.arrivalTime}"),
+              ConsumerShipInfoTile(title: "운행 경로", trailing: "${departure.arrivals} -> ${departure.departures}"),
+              ConsumerShipInfoTile(title: "남은 좌석", trailing: "${departure.seat} / ${departure.ship.seats}"),
+              ConsumerShipInfoTile(title: "가격 (1매)", trailing: f.format(departure.price)),
               const SizedBox(height: 10,),
               Center(
                 child: ElevatedButton(
@@ -78,7 +79,7 @@ class ConsumerShipInfo extends StatelessWidget {
                       builder: (ctx) {
                         return AlertDialog(
                           // TODO 예약
-                          content: Text("${ship.name}의 예약이 완료됐습니다."),
+                          content: Text("${departure.ship.name}의 예약이 완료됐습니다."),
                           actions: [
                             Center(
                               child: ElevatedButton(

@@ -5,7 +5,7 @@ import '../service/departure_service.dart';
 import '../service/reservation_service.dart';
 import '../service/ship_service.dart';
 
-class ServiceProvider with ChangeNotifier {
+class ServiceProvider {
 
   late final AuthService authService;
   late final DepartureService departureService;
@@ -18,4 +18,11 @@ class ServiceProvider with ChangeNotifier {
     required this.reservationService,
     required this.shipService
   });
+
+  ImageProvider<Object> getImage(String? imagePath) {
+    if (imagePath != null && imagePath.length > 10) {
+      return NetworkImage(imagePath);
+    }
+    return const AssetImage('assets/ship.jpg');
+  }
 }

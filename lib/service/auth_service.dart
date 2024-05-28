@@ -19,7 +19,7 @@ class AuthService {
           'password' : userPassword,
         }
     );
-    return response['acessToken'];
+    return response['accessToken'];
   }
 
   Future<Map> get(String token) async {

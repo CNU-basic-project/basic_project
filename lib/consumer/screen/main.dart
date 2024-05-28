@@ -1,10 +1,8 @@
 import 'package:basicfirebase/common/search_field.dart';
-import 'package:basicfirebase/consumer/domain/ship_repository.dart';
 import 'package:basicfirebase/consumer/widget/main_info_list_view.dart';
 import 'package:basicfirebase/consumer/widget/main_list_view.dart';
+import 'package:basicfirebase/provider/service_provider.dart';
 import 'package:basicfirebase/provider/token_provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,18 +17,8 @@ class ConsumerMain extends StatefulWidget {
 
 class _ConsumerMainState extends State<ConsumerMain> {
 
-  late final TokenProvider tokenProvider;
-  late final User? _user;
-
-  void getUser(BuildContext context) {
-    tokenProvider = context.read<TokenProvider>();
-  }
-
-  Future<List<String>> getReservations(BuildContext context) {
-    FirebaseFirestore firestore = context.read<FirebaseRepository>().firebaseFirestore;
-    _shipRepository = ShipRepository(firebaseFirestore: firestore);
-    return _shipRepository.getReservationsByUser(_user);
-  }
+  late TokenProvider tokenProvider;
+  late ServiceProvider serviceProvider;
 
   String searchQuery = '';
   DateTime? selectedDate;
@@ -55,8 +43,8 @@ class _ConsumerMainState extends State<ConsumerMain> {
   @override
   Widget build(BuildContext context) {
 
-    getUser(context);
-    getReservations(context);
+    tokenProvider = context.read<TokenProvider>();
+    serviceProvider = context.read<ServiceProvider>();
 
     return Scaffold(
       appBar: const PreferredSize(

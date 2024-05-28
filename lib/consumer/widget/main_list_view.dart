@@ -1,9 +1,10 @@
 import 'package:basicfirebase/consumer/widget/main_info_list_view.dart';
 import 'package:basicfirebase/consumer/widget/main_list_tile.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:basicfirebase/provider/service_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../../domain/ship.dart';
+import '../../domain/departure.dart';
 
 class ConsumerListView extends StatelessWidget {
   ConsumerListView({
@@ -12,47 +13,43 @@ class ConsumerListView extends StatelessWidget {
     required this.dateQuery,
   });
 
-  static const checkField = ["name", "departures", "arrivals"];
+  late ServiceProvider serviceProvider;
+
   final String searchQuery;
   final DateTime? dateQuery;
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  List<Ship> _filterData(AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>> snapshot) {
-    // TODO docs name
-    List<dynamic> tempItems = snapshot.data!.docs;
-    List<Ship> items = tempItems.where((element) {
-      if (dateQuery != null) { // 날짜 검색을 한다면
-        String elementDate = element['date'].toString().split(" ")[0];
-        String dateQueryDate = dateQuery.toString().split(" ")[0];
-        if (dateQueryDate != elementDate) return false; // 날짜가 같지 않으면 false
+  Future<List<Departure>> search() async {
+    if (dateQuery == null) {
+      if (searchQuery == "") {
+        return await serviceProvider.departureService.findAll();
       }
-      for (String field in checkField) {
-        if (element[field].toString().contains(searchQuery)) return true; // 검색 확인
-      }
-      return false;
-    }).map((e) => Ship.fromJson(e.data(), e.id)).toList();
-    return items;
+      return await serviceProvider.departureService.findAllByQuery(searchQuery);
+    }
+    if (searchQuery == "") return await serviceProvider.departureService.findAllByDate(dateQuery!);
+    return await serviceProvider.departureService.findAllByDateAndQuery(dateQuery!, searchQuery);
   }
 
   @override
   Widget build(BuildContext context) {
 
+    serviceProvider = context.read<ServiceProvider>();
+
     return SizedBox(
       height: MediaQuery.of(context).size.height - ConsumerInfoListView.HEIGHT - 20,
       child: FutureBuilder(
-          future: _firestore.collection("reservations").get(),
+          future: search(),
           builder: (context, snapshot) {
             if (snapshot.hasData == false || snapshot.hasError) {
               return const CircularProgressIndicator();
             }
 
-            List<Ship> items = _filterData(snapshot);
+            List<Departure> departures = snapshot.data!;
 
             return ListView.separated(
-              itemCount: items.length,
+              itemCount: departures.length,
               itemBuilder: (BuildContext ctx, int idx) {
                 return ConsumerListTile(
-                  ship: items[idx],
+                  departure: departures[idx],
                 );
               },
               separatorBuilder: (BuildContext ctx, int idx) {

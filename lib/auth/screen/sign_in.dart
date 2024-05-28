@@ -75,8 +75,9 @@ class SignIn extends StatelessWidget {
                             context,
                             NoAnimationRouteBuilder(builder: (context) => ConsumerMain()), (route) => false,
                           );
+                        } else {
+                          throw Exception();
                         }
-                        throw Exception();
                       } catch (e) {
                         print(e);
                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(

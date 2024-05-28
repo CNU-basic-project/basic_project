@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../service/auth_service.dart';
 
-class TokenProvider with ChangeNotifier {
+class TokenProvider {
 
   String? token;
   late final AuthService authService;

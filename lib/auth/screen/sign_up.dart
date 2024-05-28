@@ -14,7 +14,7 @@ import '../../consumer/screen/main.dart';
 
 class SignUp extends StatelessWidget {
 
-  late final TokenProvider tokenProvider;
+  late TokenProvider tokenProvider;
 
   String name = '';
   String username = '';
@@ -102,51 +102,67 @@ class SignUp extends StatelessWidget {
               const SizedBox(
                 height: 20,
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Constant.COLOR,
-                ),
-                onPressed: () async {
-                  try {
-                    if (!_validate()) throw Exception();
-
-                    await tokenProvider.signUp(name, username, userPassword);
-
-                    if (tokenProvider.token != null) {
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          NoAnimationRouteBuilder(builder: (context) => SignIn()), (route) => false,
-                      );
-                      showDialog(context: context, builder: (builder) {
-                        return AlertDialog(
-                          content: Text("회원가입이 완료됐습니다."),
-                          actions: [
-                            Center(
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(builder);
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Constant.COLOR
-                                ),
-                                child: const Center(
-                                    child: Text("확인", style: TextStyle(color: Colors.white),)
-                                ),
-                              ),
-                            )
-                          ],
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Constant.COLOR,
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            NoAnimationRouteBuilder(builder: (context) => SignIn())
                         );
-                      });
-                    }
-                    throw Exception();
-                  } catch (e) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text("아이디와 비밀번호를 확인하세요."),
-                      backgroundColor: Colors.blue,
-                    ));
-                  }
-                },
-                child: const Text("회원가입", style: TextStyle(color: Colors.white),),
+                      },
+                      child: const Text("로그인", style: TextStyle(color: Colors.white),)),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Constant.COLOR,
+                    ),
+                    onPressed: () async {
+                      try {
+                        if (!_validate()) throw Exception();
+
+                        await tokenProvider.signUp(name, username, userPassword);
+
+                        if (tokenProvider.token != null) {
+                          Navigator.pushAndRemoveUntil(
+                              context,
+                              NoAnimationRouteBuilder(builder: (context) => SignIn()), (route) => false,
+                          );
+                          showDialog(context: context, builder: (builder) {
+                            return AlertDialog(
+                              content: Text("회원가입이 완료됐습니다."),
+                              actions: [
+                                Center(
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pop(builder);
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: Constant.COLOR
+                                    ),
+                                    child: const Center(
+                                        child: Text("확인", style: TextStyle(color: Colors.white),)
+                                    ),
+                                  ),
+                                )
+                              ],
+                            );
+                          });
+                        }
+                        throw Exception();
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content: Text("아이디와 비밀번호를 확인하세요."),
+                          backgroundColor: Colors.blue,
+                        ));
+                      }
+                    },
+                    child: const Text("회원가입", style: TextStyle(color: Colors.white),),
+                  ),
+                ],
               ),
             ],
           ),

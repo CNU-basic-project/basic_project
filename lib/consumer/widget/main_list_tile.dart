@@ -1,16 +1,18 @@
 import 'package:basicfirebase/common/no_animation_route_button.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
-import '../../domain/ship.dart';
-import '../screen/ship_info.dart';
+import '../../domain/departure.dart';
+import '../screen/departure_info.dart';
 
 class ConsumerListTile extends StatelessWidget {
+
+  final Departure departure;
+
   const ConsumerListTile({
     super.key,
-    required this.ship
+    required this.departure
   });
-
-  final Ship ship;
 
   ImageProvider<Object> getImage(String? imagePath) {
     if (imagePath != null && imagePath.length > 10) {
@@ -21,9 +23,7 @@ class ConsumerListTile extends StatelessWidget {
 
   String convertDateFormat() {
     // date == "2024-05-29 09:30:00.000"
-    List<String> s = ship.date.split(" ")[0].split("-");
-    if (s[1][0] == "0") s[1] = s[1][1];
-    return "${s[1]}월 ${s[2]}일";
+    return DateFormat('MM월 dd일').format(departure.date);
   }
 
   @override
@@ -37,7 +37,7 @@ class ConsumerListTile extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            NoAnimationRouteBuilder(builder: (context) => ConsumerShipInfo(ship: ship))
+            NoAnimationRouteBuilder(builder: (context) => ConsumerDepartureInfo(departure: departure,))
           );
         },
         visualDensity: const VisualDensity(vertical: 3),
@@ -49,14 +49,14 @@ class ConsumerListTile extends StatelessWidget {
               border: Border.all(color: Colors.black, width: 0.5),
               image: DecorationImage(
                   fit: BoxFit.fill,
-                  image: getImage(ship.imagePath)
+                  image: getImage(departure.ship.imagePath)
               )
           ),
         ),
-        title: Text(ship.name,
+        title: Text(departure.ship.name,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
-        subtitle: Text("$date ${ship.departureTime} ~ ${ship.arrivalTime} \n${ship.departures} -> ${ship.arrivals}",
+        subtitle: Text("$date ${departure.departureTime} ~ ${departure.arrivalTime} \n${departure.departures} -> ${departure.arrivals}",
           style: const TextStyle(fontSize: 16),
         ),
         trailing: const Text("trailing"),
