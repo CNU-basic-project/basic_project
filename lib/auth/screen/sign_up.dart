@@ -3,29 +3,27 @@ import 'package:basicfirebase/common/no_animation_route_button.dart';
 import 'package:basicfirebase/common/password_field.dart';
 import 'package:basicfirebase/common/text_form_field.dart';
 import 'package:basicfirebase/common/title.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:basicfirebase/provider/token_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/constant.dart';
 import '../../consumer/screen/main.dart';
-import '../../repository/firebase_repository.dart';
 
 class SignUp extends StatelessWidget {
 
-  late final FirebaseAuth _authentication;
+  late final TokenProvider tokenProvider;
 
-  String userName = '';
-  String userEmail = '';
+  String name = '';
+  String username = '';
   String userPassword = '';
   String userPasswordCheck = '';
 
   SignUp({super.key});
 
   void _setInstance(BuildContext context) {
-    _authentication = context.read<FirebaseRepository>().firebaseAuth;
+    tokenProvider = context.read<TokenProvider>();
   }
 
   bool _validate() {
@@ -57,12 +55,12 @@ class SignUp extends StatelessWidget {
               MyTextFormField(
                 // ID Form Field
                 onSaved: (value) {
-                  userName = value!;
+                  name = value!;
                 },
                 onChanged: (value) {
-                  userName = value!;
+                  name = value!;
                 },
-                content: "아이디",
+                content: "닉네임",
               ),
               const SizedBox(
                 height: 20,
@@ -70,12 +68,12 @@ class SignUp extends StatelessWidget {
               MyTextFormField(
                 // Email Form Field
                 onSaved: (value) {
-                  userEmail = value!;
+                  username = value!;
                 },
                 onChanged: (value) {
-                  userEmail = value!;
+                  username = value!;
                 },
-                content: "이메일",
+                content: "아이디",
                 keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(
@@ -109,26 +107,20 @@ class SignUp extends StatelessWidget {
                 ),
                 onPressed: () async {
                   try {
-                    if (!_validate()) throw Error();
+                    if (!_validate()) throw Exception();
 
-                    final UserCredential newUser =
-                        await _authentication.createUserWithEmailAndPassword(
-                            email: userEmail, password: userPassword);
+                    await tokenProvider.signUp(name, username, userPassword);
 
-                    await FirebaseFirestore.instance
-                        .collection('user')
-                        .doc(newUser.user!.uid)
-                        .set({'userName': userName, 'email': userEmail, 'profile': ''});
-
-                    if (newUser.user != null) {
+                    if (tokenProvider.token != null) {
                       Navigator.pushAndRemoveUntil(
                           context,
                           NoAnimationRouteBuilder(builder: (context) => ConsumerMain()), (route) => false,
                       );
                     }
+                    throw Exception();
                   } catch (e) {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text("이메일과 비밀번호를 확인하세요."),
+                      content: Text("아이디와 비밀번호를 확인하세요."),
                       backgroundColor: Colors.blue,
                     ));
                   }

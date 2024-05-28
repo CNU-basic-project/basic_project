@@ -4,7 +4,7 @@ import 'package:basicfirebase/common/logo.dart';
 import 'package:basicfirebase/common/password_field.dart';
 import 'package:basicfirebase/common/text_form_field.dart';
 import 'package:basicfirebase/common/title.dart';
-import 'package:basicfirebase/repository/firebase_repository.dart';
+import 'package:basicfirebase/provider/token_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,15 +14,15 @@ import '../../consumer/screen/main.dart';
 
 class SignIn extends StatelessWidget {
 
-  late final FirebaseAuth _authentication;
+  late final TokenProvider tokenProvider;
 
-  String userEmail = '';
+  String username = '';
   String userPassword = '';
 
   SignIn({super.key});
 
   void _setInstance(BuildContext context) {
-    _authentication = context.read<FirebaseRepository>().firebaseAuth;
+    tokenProvider = context.read<TokenProvider>();
   }
 
   @override
@@ -42,12 +42,12 @@ class SignIn extends StatelessWidget {
               const SizedBox(height: 40,),
               MyTextFormField(
                   onSaved: (value) {
-                    userEmail = value!;
+                    username = value!;
                   },
                   onChanged: (value) {
-                    userEmail = value!;
+                    username = value!;
                   },
-                  content: "이메일",
+                  content: "아이디",
                   keyboardType: TextInputType.emailAddress,
               ),
               const SizedBox(height: 20,),
@@ -69,20 +69,19 @@ class SignIn extends StatelessWidget {
                     ),
                     onPressed: () async {
                       try {
-                        final UserCredential newUser =
-                        await _authentication.signInWithEmailAndPassword(
-                            email: userEmail, password: userPassword);
+                        await tokenProvider.signIn(username, userPassword);
 
-                        if (newUser.user != null) {
+                        if (tokenProvider.token != null) {
                           Navigator.pushAndRemoveUntil(
                             context,
                             NoAnimationRouteBuilder(builder: (context) => ConsumerMain()), (route) => false,
                           );
                         }
+                        throw Exception();
                       } catch (e) {
                         print(e);
                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text("이메일과 비밀번호를 확인하세요."),
+                          content: Text("아이디와 비밀번호를 확인하세요."),
                           backgroundColor: Colors.blue,
                         ));
                       }
