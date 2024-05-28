@@ -1,4 +1,5 @@
 import 'package:basicfirebase/common/search_field.dart';
+import 'package:basicfirebase/consumer/domain/ship_repository.dart';
 import 'package:basicfirebase/consumer/widget/main_info_list_view.dart';
 import 'package:basicfirebase/consumer/widget/main_list_view.dart';
 import 'package:basicfirebase/repository/firebase_repository.dart';
@@ -7,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../auth/page/sign_in.dart';
+import '../../auth/screen/sign_in.dart';
 import '../../common/appbar.dart';
 import '../../common/no_animation_route_button.dart';
 import '../../main.dart';
@@ -21,24 +22,17 @@ class ConsumerMain extends StatefulWidget {
 
 class _ConsumerMainState extends State<ConsumerMain> {
 
-  late final FirebaseFirestore _firestore;
+  late final ShipRepository _shipRepository;
   late final User? _user;
 
   void getUser(BuildContext context) {
     _user = context.read<FirebaseRepository>().getUser();
   }
 
-  List<Widget> getReservations(BuildContext context) {
-    _firestore = context.read<FirebaseRepository>().firebaseFirestore;
-
-    List<Widget> widgets = [];
-    if (_user == null) return widgets;
-    var userData = _firestore.collection("user").doc(_user.uid).get();
-    userData.then((e) {
-      // TODO user reservations
-      print(e.data()?['reservations']);
-    });
-    return widgets;
+  Future<List<String>> getReservations(BuildContext context) {
+    FirebaseFirestore firestore = context.read<FirebaseRepository>().firebaseFirestore;
+    _shipRepository = ShipRepository(firebaseFirestore: firestore);
+    return _shipRepository.getReservationsByUser(_user);
   }
 
   String searchQuery = '';

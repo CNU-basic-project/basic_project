@@ -1,5 +1,5 @@
-import 'package:basicfirebase/auth/page/sign_in.dart';
-import 'package:basicfirebase/consumer/page/main.dart';
+import 'package:basicfirebase/auth/screen/sign_in.dart';
+import 'package:basicfirebase/consumer/screen/main.dart';
 import 'package:basicfirebase/provider/firebase_provider.dart';
 import 'package:basicfirebase/repository/firebase_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

@@ -1,4 +1,4 @@
-import 'package:basicfirebase/auth/page/sign_up.dart';
+import 'package:basicfirebase/auth/screen/sign_up.dart';
 import 'package:basicfirebase/common/constant.dart';
 import 'package:basicfirebase/common/logo.dart';
 import 'package:basicfirebase/common/password_field.dart';
@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/no_animation_route_button.dart';
-import '../../consumer/page/main.dart';
+import '../../consumer/screen/main.dart';
 
 class SignIn extends StatelessWidget {
 

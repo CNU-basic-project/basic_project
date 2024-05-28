@@ -10,7 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../../common/constant.dart';
-import '../../consumer/page/main.dart';
+import '../../consumer/screen/main.dart';
 import '../../repository/firebase_repository.dart';
 
 class SignUp extends StatelessWidget {
