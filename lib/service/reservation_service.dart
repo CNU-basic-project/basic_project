@@ -4,16 +4,18 @@ import '../domain/reservation.dart';
 
 class ReservationService {
 
-  // TODO type
-  void get(String token) {
-    HttpService.get(token, "/reservations");
+  Future<Map> get(String token) async {
+    Map response = await HttpService.get(token, "/reservations");
+    return response;
   }
 
-  void add(String token, Reservation reservation) {
-    HttpService.post(token, "/reservations", reservation.toJson());
+  Future<Map> add(String token, Reservation reservation) async {
+    Map response = await HttpService.post(token, "/reservations", reservation.toJson());
+    return response;
   }
 
-  void delete(String token, Reservation reservation) {
-    HttpService.delete(token, "/reservations/${reservation.id}");
+  Future<Map> delete(String token, Reservation reservation) async {
+    Map response = await HttpService.delete(token, "/reservations/${reservation.id}");
+    return response;
   }
 }

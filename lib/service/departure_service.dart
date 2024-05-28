@@ -5,26 +5,30 @@ import '../domain/departure.dart';
 
 class DepartureService {
 
-  // TODO type
-  void findAll() {
-    HttpService.get("", "/departures");
+  Future<Map> findAll() async {
+    Map response = await HttpService.get("", "/departures");
+    return response;
   }
 
-  void findAllByQuery(String keyword) {
-    HttpService.get("", "/departures/search?keyword=$keyword");
+  Future<Map> findAllByQuery(String keyword) async {
+    Map response = await HttpService.get("", "/departures/search?keyword=$keyword");
+    return response;
   }
 
-  void findAllByDate(DateTime date) {
+  Future<Map> findAllByDate(DateTime date) async {
     String format = DateFormat("yyyy-MM-dd").format(date);
-    HttpService.get("", "/departures/date?date=$format");
+    Map response = await HttpService.get("", "/departures/date?date=$format");
+    return response;
   }
 
-  void findAllByDateAndQuery(DateTime date, String keyword) {
+  Future<Map> findAllByDateAndQuery(DateTime date, String keyword) async {
     String format = DateFormat("yyyy-MM-dd").format(date);
-    HttpService.get("", "/departures/query?date=$format&keyword=$keyword");
+    Map response = await HttpService.get("", "/departures/query?date=$format&keyword=$keyword");
+    return response;
   }
 
-  void add(String token, Departure departure) {
-    HttpService.post(token, "/departures", departure.toJson());
+  Future<Map> add(String token, Departure departure) async {
+    Map response = await HttpService.post(token, "/departures", departure.toJson());
+    return response;
   }
 }

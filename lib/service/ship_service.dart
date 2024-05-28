@@ -4,20 +4,23 @@ import '../domain/ship.dart';
 
 class ShipService {
 
-  // TODO type
-  void add(String token, Ship ship) {
-    HttpService.post(token, "/ships", ship.toJson());
+  Future<Map> add(String token, Ship ship) async {
+    Map response = await HttpService.post(token, "/ships", ship.toJson());
+    return response;
   }
   
-  void get(String token) {
-    HttpService.get(token, "/ships");
+  Future<Map> get(String token) async {
+    Map response = await HttpService.get(token, "/ships");
+    return response;
   }
   
-  void update(String token, Ship ship) {
-    HttpService.put(token, "/ships/${ship.id}", ship.toJson());
+  Future<Map> update(String token, Ship ship) async {
+    Map response = await HttpService.put(token, "/ships/${ship.id}", ship.toJson());
+    return response;
   }
   
-  void delete(String token, Ship ship) {
-    HttpService.delete(token, "/ships/${ship.id}");
+  Future<Map> delete(String token, Ship ship) async {
+    Map response = await HttpService.delete(token, "/ships/${ship.id}");
+    return response;
   }
 }

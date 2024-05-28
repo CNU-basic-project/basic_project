@@ -22,8 +22,8 @@ class AuthService {
     return response['acessToken'];
   }
 
-  // TODO type
-  void get(String token) {
-    HttpService.get(token, "/members/token");
+  Future<Map> get(String token) async {
+    Map response = await HttpService.get(token, "/members/token");
+    return response;
   }
 }
