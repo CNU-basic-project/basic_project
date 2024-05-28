@@ -45,7 +45,7 @@ class _ConsumerMainState extends State<ConsumerMain> {
 
     tokenProvider = context.read<TokenProvider>();
     serviceProvider = context.read<ServiceProvider>();
-
+    // TODO 예약했을 때 pop해서 돌아와도 반영이 안되어 있음 Provider or setState
     return Scaffold(
       appBar: const PreferredSize(
           preferredSize: Size.fromHeight(preferredSize),
@@ -77,7 +77,7 @@ class _ConsumerMainState extends State<ConsumerMain> {
                             });
                           });
                       },
-                      icon: const Icon(Icons.date_range, color: Colors.deepPurple, size: 30,)
+                      icon: Icon(Icons.date_range, color: selectedDate == null ? Colors.grey : Colors.deepPurple, size: 30,)
                   ),
                 ],
               ),

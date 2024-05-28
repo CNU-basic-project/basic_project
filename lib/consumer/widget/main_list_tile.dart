@@ -26,6 +26,10 @@ class ConsumerListTile extends StatelessWidget {
     return DateFormat('MM월 dd일').format(departure.date);
   }
 
+  String convertTimeFormat(DateTime time) {
+    return DateFormat('HH:mm').format(time);
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -56,10 +60,9 @@ class ConsumerListTile extends StatelessWidget {
         title: Text(departure.ship.name,
           style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
         ),
-        subtitle: Text("$date ${departure.departureTime} ~ ${departure.arrivalTime} \n${departure.departures} -> ${departure.arrivals}",
+        subtitle: Text("$date ${convertTimeFormat(departure.departureTime)} ~ ${convertTimeFormat(departure.arrivalTime)}\n${departure.departures} -> ${departure.arrivals}",
           style: const TextStyle(fontSize: 16),
         ),
-        trailing: const Text("trailing"),
       ),
     );
   }

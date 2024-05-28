@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import '../../common/appbar.dart';
 import '../../common/constant.dart';
 import '../../domain/departure.dart';
+import '../../domain/reservation.dart';
 import '../widget/main_info_card.dart';
 
 class ConsumerDepartureInfo extends StatelessWidget {
@@ -22,9 +23,17 @@ class ConsumerDepartureInfo extends StatelessWidget {
   late TokenProvider tokenProvider;
   late ServiceProvider serviceProvider;
 
+  void _addReservation() {
+    serviceProvider.reservationService.add(tokenProvider.token!, departure);
+  }
+
   String convertDateFormat() {
     // date == "2024-05-29 09:30:00.000"
     return DateFormat('MM월 dd일').format(departure.date);
+  }
+
+  String convertTimeFormat(DateTime time) {
+    return DateFormat('HH:mm').format(time);
   }
 
   @override
@@ -62,7 +71,7 @@ class ConsumerDepartureInfo extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10,),
-              ConsumerShipInfoTile(title: "운행 시간", trailing: "$date ${departure.departureTime} ~ ${departure.arrivalTime}"),
+              ConsumerShipInfoTile(title: "운행 시간", trailing: "$date ${convertTimeFormat(departure.departureTime)} ~ ${convertTimeFormat(departure.arrivalTime)}"),
               ConsumerShipInfoTile(title: "운행 경로", trailing: "${departure.arrivals} -> ${departure.departures}"),
               ConsumerShipInfoTile(title: "남은 좌석", trailing: "${departure.seat} / ${departure.ship.seats}"),
               ConsumerShipInfoTile(title: "가격 (1매)", trailing: f.format(departure.price)),
@@ -73,12 +82,13 @@ class ConsumerDepartureInfo extends StatelessWidget {
                     backgroundColor: Constant.COLOR,
                   ),
                   onPressed: () {
+                    _addReservation();
                     showDialog(
                       barrierDismissible: false,
                       context: context,
                       builder: (ctx) {
+
                         return AlertDialog(
-                          // TODO 예약
                           content: Text("${departure.ship.name}의 예약이 완료됐습니다."),
                           actions: [
                             Center(

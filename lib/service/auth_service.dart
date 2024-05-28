@@ -3,7 +3,7 @@ import 'package:basicfirebase/service/http_service.dart';
 class AuthService {
 
   Future<void> signUp(String name, String username, String userPassword) async {
-    await HttpService.post("", "/members",
+    await HttpService.postAndGet("", "/members",
         {
           'username' : username,
           'password' : userPassword,
@@ -13,7 +13,7 @@ class AuthService {
   }
 
   Future<String> signIn(String username, String userPassword) async {
-    Map response = await HttpService.post("", "/members/login",
+    Map response = await HttpService.postAndGet("", "/members/login",
         {
           'username' : username,
           'password' : userPassword,

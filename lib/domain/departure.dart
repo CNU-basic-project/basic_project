@@ -22,13 +22,13 @@ class Departure {
   factory Departure.fromJson(Map<String, dynamic> json) {
     return Departure(
       id : json['id'],
-      price : json['speed'],
-      seat : json['seats'],
-      date : json['name'],
-      departures : json['imagePath'],
-      arrivalTime : json['type'],
-      departureTime : json['weight'],
-      arrivals : json['length'],
+      price : json['price'],
+      seat : json['seat'],
+      date : json['date'],
+      departures : json['departures'],
+      arrivalTime : json['arrivalTime'],
+      departureTime : json['departureTime'],
+      arrivals : json['arrivals'],
       ship : Ship.fromJson(json['shipResponse']),
     );
   }

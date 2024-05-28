@@ -1,3 +1,4 @@
+import 'package:basicfirebase/domain/departure.dart';
 import 'package:basicfirebase/service/http_service.dart';
 
 import '../domain/reservation.dart';
@@ -9,13 +10,14 @@ class ReservationService {
     return response;
   }
 
-  Future<Map> add(String token, Reservation reservation) async {
-    Map response = await HttpService.post(token, "/reservations", reservation.toJson());
-    return response;
+  void add(String token, Departure departure) {
+    HttpService.post(token, "/reservations",
+        {
+          'departureId' : departure.id,
+        });
   }
 
-  Future<Map> delete(String token, Reservation reservation) async {
-    Map response = await HttpService.delete(token, "/reservations/${reservation.id}");
-    return response;
+  void delete(String token, Reservation reservation) {
+    HttpService.delete(token, "/reservations/${reservation.id}");
   }
 }

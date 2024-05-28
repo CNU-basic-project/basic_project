@@ -12,15 +12,15 @@ class HttpService {
       'Authorization': 'Bearer $token',
     });
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> resData = jsonDecode(response.body);
+    if (response.statusCode < 400) {
+      Map<String, dynamic> resData = jsonDecode(utf8.decode(response.bodyBytes));
       return resData;
     }
 
-    throw Exception(response.statusCode);
+    throw HttpServiceException(response);
   }
 
-  static Future<Map> post(String token, String url, Map<String, dynamic> body) async {
+  static void post(String token, String url, Map<String, dynamic> body) async {
     final uri = Uri.parse(ENDPOINT + url);
     final response = await http.post(
       uri,
@@ -31,15 +31,31 @@ class HttpService {
       body: jsonEncode(body)
     );
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> resData = jsonDecode(response.body);
+    if (response.statusCode >= 400) {
+      throw HttpServiceException(response);
+    }
+  }
+
+  static Future<Map> postAndGet(String token, String url, Map<String, dynamic> body) async {
+    final uri = Uri.parse(ENDPOINT + url);
+    final response = await http.post(
+        uri,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+        body: jsonEncode(body)
+    );
+
+    if (response.statusCode < 400) {
+      Map<String, dynamic> resData = jsonDecode(utf8.decode(response.bodyBytes));
       return resData;
     }
 
-    throw Exception(response.statusCode);
+    throw HttpServiceException(response);
   }
 
-  static Future<Map> put(String token, String url, Map<String, dynamic> body) async {
+  static void put(String token, String url, Map<String, dynamic> body) async {
     final uri = Uri.parse(ENDPOINT + url);
     final response = await http.put(
         uri,
@@ -50,15 +66,12 @@ class HttpService {
         body: jsonEncode(body)
     );
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> resData = jsonDecode(response.body);
-      return resData;
+    if (response.statusCode >= 400) {
+      throw HttpServiceException(response);
     }
-
-    throw Exception(response.statusCode);
   }
 
-  static Future<Map> delete(String token, String url) async {
+  static void delete(String token, String url) async {
     final uri = Uri.parse(ENDPOINT + url);
     final response = await http.delete(
         uri,
@@ -68,11 +81,19 @@ class HttpService {
         },
     );
 
-    if (response.statusCode == 200) {
-      Map<String, dynamic> resData = jsonDecode(response.body);
-      return resData;
+    if (response.statusCode >= 400) {
+      throw HttpServiceException(response);
     }
+  }
+}
 
-    throw Exception(response.statusCode);
+class HttpServiceException implements Exception {
+  final http.Response response;
+
+  HttpServiceException(this.response);
+
+  @override
+  String toString() {
+    return "${response.statusCode}\n${response.body}";
   }
 }
