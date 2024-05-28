@@ -3,7 +3,7 @@ import 'package:basicfirebase/consumer/widget/main_list_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../domain/ship.dart';
+import '../../domain/ship.dart';
 
 class ConsumerListView extends StatelessWidget {
   ConsumerListView({

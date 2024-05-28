@@ -58,7 +58,7 @@ class HttpService {
     throw Exception(response.statusCode);
   }
 
-  static Future<Map> delete(String token, String url, Map<String, dynamic> body) async {
+  static Future<Map> delete(String token, String url) async {
     final uri = Uri.parse(ENDPOINT + url);
     final response = await http.delete(
         uri,
@@ -66,7 +66,6 @@ class HttpService {
           'Content-Type': 'application/json',
           'Authorization': 'Bearer $token',
         },
-        body: jsonEncode(body)
     );
 
     if (response.statusCode == 200) {

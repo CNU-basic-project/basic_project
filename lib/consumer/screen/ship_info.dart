@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../common/appbar.dart';
 import '../../common/constant.dart';
-import '../domain/ship.dart';
+import '../../domain/ship.dart';
 import '../widget/main_info_card.dart';
 
 class ConsumerShipInfo extends StatelessWidget {

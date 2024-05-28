@@ -2,16 +2,13 @@ import 'package:basicfirebase/common/search_field.dart';
 import 'package:basicfirebase/consumer/domain/ship_repository.dart';
 import 'package:basicfirebase/consumer/widget/main_info_list_view.dart';
 import 'package:basicfirebase/consumer/widget/main_list_view.dart';
-import 'package:basicfirebase/repository/firebase_repository.dart';
+import 'package:basicfirebase/provider/token_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../auth/screen/sign_in.dart';
 import '../../common/appbar.dart';
-import '../../common/no_animation_route_button.dart';
-import '../../main.dart';
 
 class ConsumerMain extends StatefulWidget {
   const ConsumerMain({super.key});
@@ -22,11 +19,11 @@ class ConsumerMain extends StatefulWidget {
 
 class _ConsumerMainState extends State<ConsumerMain> {
 
-  late final ShipRepository _shipRepository;
+  late final TokenProvider tokenProvider;
   late final User? _user;
 
   void getUser(BuildContext context) {
-    _user = context.read<FirebaseRepository>().getUser();
+    tokenProvider = context.read<TokenProvider>();
   }
 
   Future<List<String>> getReservations(BuildContext context) {

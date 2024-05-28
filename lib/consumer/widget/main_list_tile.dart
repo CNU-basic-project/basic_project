@@ -1,7 +1,7 @@
 import 'package:basicfirebase/common/no_animation_route_button.dart';
 import 'package:flutter/material.dart';
 
-import '../domain/ship.dart';
+import '../../domain/ship.dart';
 import '../screen/ship_info.dart';
 
 class ConsumerListTile extends StatelessWidget {

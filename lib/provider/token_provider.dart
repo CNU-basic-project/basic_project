@@ -5,7 +5,7 @@ import '../service/auth_service.dart';
 class TokenProvider with ChangeNotifier {
 
   String? token;
-  final AuthService authService;
+  late final AuthService authService;
 
   TokenProvider({
     required this.token,

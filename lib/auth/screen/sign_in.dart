@@ -5,7 +5,6 @@ import 'package:basicfirebase/common/password_field.dart';
 import 'package:basicfirebase/common/text_form_field.dart';
 import 'package:basicfirebase/common/title.dart';
 import 'package:basicfirebase/provider/token_provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

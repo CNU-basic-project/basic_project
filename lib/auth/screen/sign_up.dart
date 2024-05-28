@@ -1,3 +1,4 @@
+import 'package:basicfirebase/auth/screen/sign_in.dart';
 import 'package:basicfirebase/common/logo.dart';
 import 'package:basicfirebase/common/no_animation_route_button.dart';
 import 'package:basicfirebase/common/password_field.dart';
@@ -114,8 +115,28 @@ class SignUp extends StatelessWidget {
                     if (tokenProvider.token != null) {
                       Navigator.pushAndRemoveUntil(
                           context,
-                          NoAnimationRouteBuilder(builder: (context) => ConsumerMain()), (route) => false,
+                          NoAnimationRouteBuilder(builder: (context) => SignIn()), (route) => false,
                       );
+                      showDialog(context: context, builder: (builder) {
+                        return AlertDialog(
+                          content: Text("회원가입이 완료됐습니다."),
+                          actions: [
+                            Center(
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(builder);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Constant.COLOR
+                                ),
+                                child: const Center(
+                                    child: Text("확인", style: TextStyle(color: Colors.white),)
+                                ),
+                              ),
+                            )
+                          ],
+                        );
+                      });
                     }
                     throw Exception();
                   } catch (e) {
