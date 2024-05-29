@@ -5,6 +5,10 @@ import '../service/auth_service.dart';
 class TokenProvider {
 
   String? token;
+  int? id;
+  String? name;
+  int? permission;
+
   late final AuthService authService;
 
   TokenProvider({
@@ -26,6 +30,10 @@ class TokenProvider {
 
   Future<void> signIn(String username, String userPassword) async {
     token = await authService.signIn(username, userPassword);
+    Map res = await authService.get(token!);
+    id = res['id'];
+    name = res['name'];
+    permission = res['permission'];
   }
 
   void signOut() {

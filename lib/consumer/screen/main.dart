@@ -1,3 +1,4 @@
+import 'package:basicfirebase/common/drawer.dart';
 import 'package:basicfirebase/common/search_field.dart';
 import 'package:basicfirebase/consumer/widget/main_info_list_view.dart';
 import 'package:basicfirebase/consumer/widget/main_list_view.dart';
@@ -53,6 +54,7 @@ class _ConsumerMainState extends State<ConsumerMain> {
           preferredSize: Size.fromHeight(preferredSize),
           child: MyAppBar()
       ),
+        endDrawer: MyDrawer(),
       body: Consumer<NotifierProvider>(
         builder: (_, notifier, __) {
           Future<List<Reservation>> reservations = serviceProvider.reservationService.get(tokenProvider.token!);

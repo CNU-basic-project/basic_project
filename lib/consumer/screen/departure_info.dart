@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 
 import '../../common/appbar.dart';
 import '../../common/constant.dart';
+import '../../common/drawer.dart';
 import '../../domain/departure.dart';
 import '../../domain/reservation.dart';
 import '../widget/main_info_card.dart';
@@ -53,6 +54,7 @@ class ConsumerDepartureInfo extends StatelessWidget {
           preferredSize: Size.fromHeight(preferredSize),
           child: MyAppBar()
         ),
+        endDrawer: MyDrawer(),
         body: Center(
           child: ListView(
             children: [
@@ -65,12 +67,15 @@ class ConsumerDepartureInfo extends StatelessWidget {
                     fit: BoxFit.cover,
                   ),
                 ),
+                onTap: () {
+                  // TODO Navigate to Detail Page using Function
+                },
               ),
               const SizedBox(height: 10,),
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    // TODO Navigate to Detail Page
+                    // TODO Navigate to Detail Page using Function
                   },
                   child: Column(
                     children: [

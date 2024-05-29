@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../common/appbar.dart';
+import '../../common/drawer.dart';
 import '../../domain/departure.dart';
 
 class DepartureMap extends StatelessWidget {
@@ -18,7 +19,7 @@ class DepartureMap extends StatelessWidget {
           preferredSize: Size.fromHeight(preferredSize),
           child: MyAppBar()
       ),
-
+      endDrawer: MyDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -28,7 +29,7 @@ class DepartureMap extends StatelessWidget {
             const SizedBox(height: 10),
             Center(child: Image.asset("assets/route.png", width: 350, height: 450,)),
           ],
-        ), 
+        ),
       ),
     );
   }

@@ -16,9 +16,14 @@ class MyAppBar extends StatelessWidget {
           },
           icon: const Icon(Icons.keyboard_backspace),
       ),
-      actions: const [
-        Icon(Icons.menu),
-        SizedBox(width: 10,),
+      actions: [
+        IconButton(
+          onPressed: () {
+            Scaffold.of(context).openEndDrawer();
+          },
+          icon: const Icon(Icons.menu)
+        ),
+        const SizedBox(width: 10,),
       ],
       centerTitle: true,
       title: const Row(

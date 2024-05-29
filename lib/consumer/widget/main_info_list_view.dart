@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:basicfirebase/common/no_animation_route_button.dart';
 import 'package:basicfirebase/consumer/widget/main_info_card.dart';
 import 'package:basicfirebase/provider/token_provider.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -9,6 +10,8 @@ import 'package:provider/provider.dart';
 import '../../domain/reservation.dart';
 import '../../provider/notifier_provider.dart';
 import '../../provider/service_provider.dart';
+import '../screen/departure_info.dart';
+import '../screen/guide.dart';
 
 class ConsumerInfoListView extends StatelessWidget {
   ConsumerInfoListView({
@@ -39,10 +42,24 @@ class ConsumerInfoListView extends StatelessWidget {
                 List<Reservation> reservations = snapshot.data!;
                 List<Widget> children = List.empty(growable: true);
 
-                children.add(ConsumerInfoCard(child: Image.asset("assets/info.png", width: 300,)));
+                children.add(ConsumerInfoCard(child: Image.asset("assets/info.png", width: 300,),
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      NoAnimationRouteBuilder(builder: (builder) => const Guide())
+                    );
+                  },
+                ));
+
                 for (Reservation r in reservations) {
                   Image image = Image(image: serviceProvider.getImage(r.departure.ship.imagePath));
                   ConsumerInfoCard card = ConsumerInfoCard(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        NoAnimationRouteBuilder(builder: (builder) => ConsumerDepartureInfo(reservation: r, departure: r.departure,))
+                      );
+                    },
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(16.0), // 이미지에 동일한 테두리 적용
                       child: image,
