@@ -20,7 +20,7 @@ void main() async {
   );
   runApp(MultiProvider(
     providers: [
-      Provider<NotifierProvider>(
+      ChangeNotifierProvider<NotifierProvider>(
         create: (context) => NotifierProvider(),
       ),
       Provider<TokenProvider>(

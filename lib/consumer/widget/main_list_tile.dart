@@ -63,6 +63,7 @@ class ConsumerListTile extends StatelessWidget {
         subtitle: Text("$date ${convertTimeFormat(departure.departureTime)} ~ ${convertTimeFormat(departure.arrivalTime)}\n${departure.departures} -> ${departure.arrivals}",
           style: const TextStyle(fontSize: 16),
         ),
+        trailing: Text("${departure.seat} / ${departure.ship.seats}"),
       ),
     );
   }

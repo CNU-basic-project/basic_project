@@ -84,7 +84,11 @@ class _ConsumerMainState extends State<ConsumerMain> {
                 ),
               ),
               const SizedBox(height: 10,),
-              ConsumerListView(searchQuery: searchQuery, dateQuery: selectedDate,),
+              Consumer<NotifierProvider>(
+                builder: (_, notifier, __) {
+                  return ConsumerListView(searchQuery: searchQuery, dateQuery: selectedDate,);
+                },
+              )
             ],
           ),
         ),

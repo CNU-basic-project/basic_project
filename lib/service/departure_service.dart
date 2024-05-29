@@ -7,13 +7,11 @@ class DepartureService {
 
   Future<List<Departure>> findAll() async {
     Map response = await HttpService.get("", "/departures");
-    List<Departure> res = List.empty(growable: true);
     return _convert(response);
   }
 
   Future<List<Departure>> findAllByQuery(String keyword) async {
     Map response = await HttpService.get("", "/departures/search?keyword=$keyword");
-    List<Departure> res = List.empty(growable: true);
     return _convert(response);
   }
 
@@ -36,9 +34,6 @@ class DepartureService {
   List<Departure> _convert(Map response) {
     List<Departure> res = List.empty(growable: true);
     for (int i=0; i<response['size']; i++) {
-      response['data'][i]['date'] = DateFormat("yyyy-MM-dd").parse(response['data'][i]['date']);
-      response['data'][i]['arrivalTime'] = DateFormat("HH:mm:ss").parse(response['data'][i]['arrivalTime']);
-      response['data'][i]['departureTime'] = DateFormat("HH:mm:ss").parse(response['data'][i]['departureTime']);
       res.add(Departure.fromJson(response['data'][i]));
     }
     return res;

@@ -1,4 +1,5 @@
 import 'package:basicfirebase/domain/ship.dart';
+import 'package:intl/intl.dart';
 
 class Departure {
 
@@ -20,6 +21,11 @@ class Departure {
   });
 
   factory Departure.fromJson(Map<String, dynamic> json) {
+
+    json['date'] = DateFormat("yyyy-MM-dd").parse(json['date']);
+    json['arrivalTime'] = DateFormat("HH:mm:ss").parse(json['arrivalTime']);
+    json['departureTime'] = DateFormat("HH:mm:ss").parse(json['departureTime']);
+
     return Departure(
       id : json['id'],
       price : json['price'],
