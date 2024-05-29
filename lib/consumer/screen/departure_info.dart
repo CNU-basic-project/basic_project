@@ -66,17 +66,46 @@ class ConsumerDepartureInfo extends StatelessWidget {
               ),
               const SizedBox(height: 10,),
               Center(
-                child: Text(
-                  departure.ship.name,
-                  style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                child: GestureDetector(
+                  onTap: () {
+                    // TODO Navigate to Detail Page
+                  },
+                  child: Column(
+                    children: [
+                      Text(
+                        departure.ship.name,
+                        style: const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                      ),
+                      const Text("더보기", style: TextStyle(color: Colors.grey, fontSize: 10),),
+                    ],
+                  ),
                 ),
               ),
+              const SizedBox(height: 20,),
+              ConsumerShipInfoTile(title: "운행 시간", trailing: "$date ${convertTimeFormat(departure.departureTime)} ~ ${convertTimeFormat(departure.arrivalTime)}",
+                onTap: () {
+
+                },
+              ),
               const SizedBox(height: 10,),
-              ConsumerShipInfoTile(title: "운행 시간", trailing: "$date ${convertTimeFormat(departure.departureTime)} ~ ${convertTimeFormat(departure.arrivalTime)}"),
-              ConsumerShipInfoTile(title: "운행 경로", trailing: "${departure.arrivals} -> ${departure.departures}"),
-              ConsumerShipInfoTile(title: "남은 좌석", trailing: "${departure.seat} / ${departure.ship.seats}"),
-              ConsumerShipInfoTile(title: "가격 (1매)", trailing: f.format(departure.price)),
+              ConsumerShipInfoTile(title: "운행 경로", trailing: "${departure.arrivals} -> ${departure.departures}",
+                onTap: () {
+                  // TODO Navigate to Route Page
+                },
+              ),
               const SizedBox(height: 10,),
+              ConsumerShipInfoTile(title: "남은 좌석", trailing: "${departure.seat} / ${departure.ship.seats}",
+                onTap: () {
+
+                },
+              ),
+              const SizedBox(height: 10,),
+              ConsumerShipInfoTile(title: "가격 (1매)", trailing: f.format(departure.price),
+                onTap: () {
+
+                },
+              ),
+              const SizedBox(height: 20,),
               Center(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
