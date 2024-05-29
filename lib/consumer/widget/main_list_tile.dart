@@ -8,11 +8,14 @@ import '../screen/departure_info.dart';
 class ConsumerListTile extends StatelessWidget {
 
   final Departure departure;
+  final bool reservation;
 
   const ConsumerListTile({
     super.key,
-    required this.departure
+    required this.departure,
+    required this.reservation
   });
+
 
   ImageProvider<Object> getImage(String? imagePath) {
     if (imagePath != null && imagePath.length > 10) {
@@ -57,8 +60,14 @@ class ConsumerListTile extends StatelessWidget {
               )
           ),
         ),
-        title: Text(departure.ship.name,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(departure.ship.name,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+            ),
+            reservation == true ? const Icon(Icons.check, color: Colors.green,) : const Text(""),
+          ],
         ),
         subtitle: Text("$date ${convertTimeFormat(departure.departureTime)} ~ ${convertTimeFormat(departure.arrivalTime)}\n${departure.departures} -> ${departure.arrivals}",
           style: const TextStyle(fontSize: 16),
