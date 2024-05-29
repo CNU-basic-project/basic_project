@@ -17,5 +17,7 @@ samples, guidance on mobile development, and a full API reference.
 
 
 for Chrome test,
-flutter/packages/flutter_tools/lib/src/web/chrome.dart
- insert '--disable-web-security' below '--disable-extensions'
+delete flutter/bin/cache/flutter_tools.stamp
+update flutter/packages/flutter_tools/lib/src/web/chrome.dart
+ - insert '--disable-web-security' below '--disable-extensions'
+--web-renderer html
