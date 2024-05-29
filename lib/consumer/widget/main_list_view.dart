@@ -13,11 +13,13 @@ class ConsumerListView extends StatelessWidget {
     super.key,
     required this.searchQuery,
     required this.dateQuery,
+    required this.reservations,
   });
 
   late ServiceProvider serviceProvider;
   late TokenProvider tokenProvider;
 
+  final Future<List<Reservation>> reservations;
   final String searchQuery;
   final DateTime? dateQuery;
 
@@ -40,7 +42,7 @@ class ConsumerListView extends StatelessWidget {
             dateQuery!, searchQuery);
       }
     }
-    res['reservations'] = await serviceProvider.reservationService.get(tokenProvider.token!);
+    res['reservations'] = await reservations;
     return res;
   }
 
@@ -60,13 +62,13 @@ class ConsumerListView extends StatelessWidget {
             }
 
             Map res = snapshot.data!;
-            List<bool> isReservation = List.filled(res['departures'].length, false);
+            List<Reservation?> reservations = List.filled(res['departures'].length, null);
             for (int i=0; i<res['reservations'].length; i++) {
-              Reservation reservation = res['reservation'][i];
+              Reservation reservation = res['reservations'][i];
               for(int j=0; j<res['departures'].length; j++) {
                 Departure departure = res['departures'][j];
                 if (reservation.departure.id == departure.id) {
-                  isReservation[i] = true;
+                  reservations[j] = reservation;
                   break;
                 }
               }
@@ -77,7 +79,7 @@ class ConsumerListView extends StatelessWidget {
               itemBuilder: (BuildContext ctx, int idx) {
                 return ConsumerListTile(
                   departure: res['departures'][idx],
-                  reservation: isReservation[idx],
+                  reservation: reservations[idx],
                 );
               },
               separatorBuilder: (BuildContext ctx, int idx) {

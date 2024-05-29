@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../domain/departure.dart';
+import '../../domain/reservation.dart';
 import '../screen/departure_info.dart';
 
 class ConsumerListTile extends StatelessWidget {
 
   final Departure departure;
-  final bool reservation;
+  final Reservation? reservation;
 
   const ConsumerListTile({
     super.key,
@@ -44,7 +45,7 @@ class ConsumerListTile extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            NoAnimationRouteBuilder(builder: (context) => ConsumerDepartureInfo(departure: departure,))
+            NoAnimationRouteBuilder(builder: (context) => ConsumerDepartureInfo(reservation: reservation, departure: departure,))
           );
         },
         visualDensity: const VisualDensity(vertical: 3),
@@ -66,7 +67,7 @@ class ConsumerListTile extends StatelessWidget {
             Text(departure.ship.name,
               style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
-            reservation == true ? const Icon(Icons.check, color: Colors.green,) : const Text(""),
+            reservation != null ? const Icon(Icons.check, color: Colors.green,) : const Text(""),
           ],
         ),
         subtitle: Text("$date ${convertTimeFormat(departure.departureTime)} ~ ${convertTimeFormat(departure.arrivalTime)}\n${departure.departures} -> ${departure.arrivals}",

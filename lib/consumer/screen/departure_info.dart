@@ -15,19 +15,17 @@ import '../widget/main_info_card.dart';
 class ConsumerDepartureInfo extends StatelessWidget {
 
   final Departure departure;
+  final Reservation? reservation;
 
   ConsumerDepartureInfo({
     super.key,
-    required this.departure
+    required this.departure,
+    required this.reservation,
   });
 
   late TokenProvider tokenProvider;
   late ServiceProvider serviceProvider;
   late NotifierProvider notifierProvider;
-
-  void _addReservation() {
-    serviceProvider.reservationService.add(tokenProvider.token!, departure);
-  }
 
   String convertDateFormat() {
     // date == "2024-05-29 09:30:00.000"
@@ -85,14 +83,20 @@ class ConsumerDepartureInfo extends StatelessWidget {
                     backgroundColor: Constant.COLOR,
                   ),
                   onPressed: () {
-                    _addReservation();
+                    String text = "예약이";
+                    if (reservation == null) {
+                      serviceProvider.reservationService.add(tokenProvider.token!, departure);
+                    } else {
+                      text = "취소가";
+                      serviceProvider.reservationService.delete(tokenProvider.token!, reservation!);
+                    }
+
                     showDialog(
                       barrierDismissible: false,
                       context: context,
                       builder: (ctx) {
-
                         return AlertDialog(
-                          content: Text("${departure.ship.name}의 예약이 완료됐습니다."),
+                          content: Text("${departure.ship.name}의 ${text} 완료됐습니다."),
                           actions: [
                             Center(
                               child: ElevatedButton(
@@ -114,7 +118,7 @@ class ConsumerDepartureInfo extends StatelessWidget {
                       },
                     );
                   },
-                  child: const Text("예매하기", style: TextStyle(color: Colors.white),),
+                  child: Text(reservation == null ? "예약하기" : "취소하기", style: const TextStyle(color: Colors.white),)
                 ),
               )
             ],
