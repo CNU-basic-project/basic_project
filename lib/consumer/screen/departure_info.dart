@@ -1,3 +1,4 @@
+import 'package:basicfirebase/common/no_animation_route_button.dart';
 import 'package:basicfirebase/consumer/widget/ship_info_tile.dart';
 import 'package:basicfirebase/provider/notifier_provider.dart';
 import 'package:basicfirebase/provider/service_provider.dart';
@@ -11,6 +12,7 @@ import '../../common/constant.dart';
 import '../../domain/departure.dart';
 import '../../domain/reservation.dart';
 import '../widget/main_info_card.dart';
+import 'departure_map.dart';
 
 class ConsumerDepartureInfo extends StatelessWidget {
 
@@ -90,7 +92,10 @@ class ConsumerDepartureInfo extends StatelessWidget {
               const SizedBox(height: 10,),
               ConsumerShipInfoTile(title: "운행 경로", trailing: "${departure.arrivals} -> ${departure.departures}",
                 onTap: () {
-                  // TODO Navigate to Route Page
+                  Navigator.push(
+                    context,
+                    NoAnimationRouteBuilder(builder: (builder) => DepartureMap(departure: departure))
+                  );
                 },
               ),
               const SizedBox(height: 10,),
