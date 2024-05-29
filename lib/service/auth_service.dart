@@ -3,7 +3,7 @@ import 'package:basicfirebase/service/http_service.dart';
 class AuthService {
 
   Future<void> signUp(String name, String username, String userPassword) async {
-    await HttpService.postAndGet("", "/members",
+    HttpService.post("", "/members",
         {
           'username' : username,
           'password' : userPassword,

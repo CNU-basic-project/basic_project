@@ -47,7 +47,7 @@ class HttpService {
         body: jsonEncode(body)
     );
 
-    if (response.statusCode < 400) {
+    if (response.statusCode == 200) {
       Map<String, dynamic> resData = jsonDecode(utf8.decode(response.bodyBytes));
       return resData;
     }

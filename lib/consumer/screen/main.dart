@@ -1,6 +1,7 @@
 import 'package:basicfirebase/common/search_field.dart';
 import 'package:basicfirebase/consumer/widget/main_info_list_view.dart';
 import 'package:basicfirebase/consumer/widget/main_list_view.dart';
+import 'package:basicfirebase/provider/notifier_provider.dart';
 import 'package:basicfirebase/provider/service_provider.dart';
 import 'package:basicfirebase/provider/token_provider.dart';
 import 'package:flutter/material.dart';
@@ -52,42 +53,42 @@ class _ConsumerMainState extends State<ConsumerMain> {
           child: MyAppBar()
       ),
       body: Center(
-        child: ListView(
-          children: [
-            const SizedBox(height: 10,),
-            ConsumerInfoListView(),
-            const SizedBox(height: 10,),
-            Center(
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  const SizedBox(width: 20,),
-                  SearchField(
-                    onPressed: _onPressed,
-                    onChanged: _onChanged,
-                    onSubmitted: _onSubmitted,
-                  ),
-                  const SizedBox(width: 10,),
-                  IconButton(
-                      onPressed: () {
-                        showDatePicker(context: context, initialDate: selectedDate ?? DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(2050))
-                          .then((selected) {
-                            setState(() {
-                              selectedDate = selected;
+          child: ListView(
+            children: [
+              const SizedBox(height: 10,),
+              ConsumerInfoListView(),
+              const SizedBox(height: 10,),
+              Center(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const SizedBox(width: 20,),
+                    SearchField(
+                      onPressed: _onPressed,
+                      onChanged: _onChanged,
+                      onSubmitted: _onSubmitted,
+                    ),
+                    const SizedBox(width: 10,),
+                    IconButton(
+                        onPressed: () {
+                          showDatePicker(context: context, initialDate: selectedDate ?? DateTime.now(), firstDate: DateTime(2000), lastDate: DateTime(2050))
+                            .then((selected) {
+                              setState(() {
+                                selectedDate = selected;
+                              });
                             });
-                          });
-                      },
-                      icon: Icon(Icons.date_range, color: selectedDate == null ? Colors.grey : Colors.deepPurple, size: 30,)
-                  ),
-                ],
+                        },
+                        icon: Icon(Icons.date_range, color: selectedDate == null ? Colors.grey : Colors.deepPurple, size: 30,)
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const SizedBox(height: 10,),
-            ConsumerListView(searchQuery: searchQuery, dateQuery: selectedDate,),
-          ],
+              const SizedBox(height: 10,),
+              ConsumerListView(searchQuery: searchQuery, dateQuery: selectedDate,),
+            ],
+          ),
         ),
-      ),
-    );
+      );
   }
 }
 

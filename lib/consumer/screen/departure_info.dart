@@ -1,4 +1,5 @@
 import 'package:basicfirebase/consumer/widget/ship_info_tile.dart';
+import 'package:basicfirebase/provider/notifier_provider.dart';
 import 'package:basicfirebase/provider/service_provider.dart';
 import 'package:basicfirebase/provider/token_provider.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class ConsumerDepartureInfo extends StatelessWidget {
 
   late TokenProvider tokenProvider;
   late ServiceProvider serviceProvider;
+  late NotifierProvider notifierProvider;
 
   void _addReservation() {
     serviceProvider.reservationService.add(tokenProvider.token!, departure);
@@ -41,6 +43,7 @@ class ConsumerDepartureInfo extends StatelessWidget {
 
     tokenProvider = context.read<TokenProvider>();
     serviceProvider = context.read<ServiceProvider>();
+    notifierProvider = context.read<NotifierProvider>();
 
     String date = convertDateFormat();
     var f = NumberFormat.currency(locale: "ko_KR", symbol: "￦");
@@ -94,6 +97,7 @@ class ConsumerDepartureInfo extends StatelessWidget {
                             Center(
                               child: ElevatedButton(
                                 onPressed: () {
+                                  notifierProvider.render();
                                   Navigator.pop(ctx);
                                   Navigator.pop(context);
                                 },

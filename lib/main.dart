@@ -1,5 +1,6 @@
 import 'package:basicfirebase/auth/screen/sign_in.dart';
 import 'package:basicfirebase/consumer/screen/main.dart';
+import 'package:basicfirebase/provider/notifier_provider.dart';
 import 'package:basicfirebase/provider/service_provider.dart';
 import 'package:basicfirebase/provider/token_provider.dart';
 import 'package:basicfirebase/service/auth_service.dart';
@@ -19,6 +20,9 @@ void main() async {
   );
   runApp(MultiProvider(
     providers: [
+      Provider<NotifierProvider>(
+        create: (context) => NotifierProvider(),
+      ),
       Provider<TokenProvider>(
         create: (context) => TokenProvider(token: '', authService: AuthService()),
       ),
