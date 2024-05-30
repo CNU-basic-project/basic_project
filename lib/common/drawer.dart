@@ -1,3 +1,5 @@
+import 'package:basicfirebase/captain/screen/captain_main.dart';
+import 'package:basicfirebase/common/no_animation_route_button.dart';
 import 'package:basicfirebase/provider/token_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -53,7 +55,10 @@ class MyDrawer extends StatelessWidget {
             leading: const Icon(Icons.directions_boat),
             title: const Text('배 정보'),
             onTap: () {
-
+              Navigator.push(
+                context,
+                NoAnimationRouteBuilder(builder: (builder) => CaptainMain())
+              );
             },
           ),
         ],

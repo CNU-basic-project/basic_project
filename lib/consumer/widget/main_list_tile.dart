@@ -17,7 +17,6 @@ class ConsumerListTile extends StatelessWidget {
     required this.reservation
   });
 
-
   ImageProvider<Object> getImage(String? imagePath) {
     if (imagePath != null && imagePath.length > 10) {
       return NetworkImage(imagePath);

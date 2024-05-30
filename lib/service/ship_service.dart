@@ -8,9 +8,13 @@ class ShipService {
     HttpService.post(token, "/ships", ship.toJson());
   }
   
-  Future<Map> get(String token) async {
+  Future<List<Ship>> get(String token) async {
     Map response = await HttpService.get(token, "/ships");
-    return response;
+    List<Ship> res = List.empty(growable: true);
+    for (int i=0; i<response['size']; i++) {
+      res.add(Ship.fromJson(response['data'][i]));
+    }
+    return res;
   }
   
   void update(String token, Ship ship) {
