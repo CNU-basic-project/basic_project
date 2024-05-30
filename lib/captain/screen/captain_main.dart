@@ -1,6 +1,8 @@
+import 'package:basicfirebase/captain/screen/ship_register.dart';
 import 'package:basicfirebase/captain/widget/ship_list_tile.dart';
 import 'package:basicfirebase/common/constant.dart';
 import 'package:basicfirebase/common/drawer.dart';
+import 'package:basicfirebase/common/no_animation_route_button.dart';
 import 'package:basicfirebase/provider/service_provider.dart';
 import 'package:basicfirebase/provider/token_provider.dart';
 import 'package:flutter/material.dart';
@@ -34,47 +36,52 @@ class _CaptainMainState extends State<CaptainMain> {
       ),
       endDrawer: MyDrawer(),
 
-      // TODO screen 구성
-      body: Column(
-        children: [
-          const SizedBox(height: 30,),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text("배 정보", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
-              IconButton(
-                onPressed: () {
-                  // TODO move to ship_info
-                },
-                icon: const Icon(Icons.add_circle_outline_rounded, color: Constant.COLOR),
+      body: SizedBox(
+        height: MediaQuery.of(context).size.height - preferredSize,
+        child: Column(
+          children: [
+            const SizedBox(height: 10,),
+            ListTile(
+              leading: const Text("배 정보", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+              trailing: IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      NoAnimationRouteBuilder(builder: (builder) => ShipRegister())
+                    );
+                  },
+                  icon: const Icon(Icons.add_circle_outline_rounded, color: Constant.COLOR,)
               ),
-            ],
-          ),
-          const SizedBox(height: 10,),
-          FutureBuilder(
-            future: serviceProvider.shipService.get(tokenProvider.token!),
-            builder: (context, snapshot) {
-              if (snapshot.hasData == false || snapshot.hasError) {
-                return const CircularProgressIndicator();
-              }
+            ),
+            const SizedBox(height: 10,),
+            SizedBox(
+              height: MediaQuery.of(context).size.height - 150,
+              child: FutureBuilder(
+                future: serviceProvider.shipService.get(tokenProvider.token!),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData == false || snapshot.hasError) {
+                    return const CircularProgressIndicator();
+                  }
 
-              List<Ship> ships = snapshot.data!;
+                  List<Ship> ships = snapshot.data!;
 
-              return ListView.separated(
-                itemCount: ships.length,
-                itemBuilder: (BuildContext ctx, int idx) {
-                  return ShipListTile(
-                    ship: ships[idx],
+                  return ListView.separated(
+                    itemCount: ships.length,
+                    itemBuilder: (BuildContext ctx, int idx) {
+                      return ShipListTile(
+                        ship: ships[idx],
+                      );
+                    },
+                    separatorBuilder: (BuildContext ctx, int idx) {
+                      return const Divider();
+                    },
                   );
                 },
-                separatorBuilder: (BuildContext ctx, int idx) {
-                  return const Divider();
-                },
-              );
-            },
-          ),
+              ),
+            ),
 
-        ],
+          ],
+        ),
       ),
 
     );
