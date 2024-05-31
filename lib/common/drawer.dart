@@ -27,7 +27,7 @@ class MyDrawer extends StatelessWidget {
               backgroundImage: NetworkImage('https://via.placeholder.com/150'),
             ),
             accountName: Text(
-              tokenProvider.name!,
+              tokenProvider.member!.name,
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 20.0,
@@ -52,7 +52,7 @@ class MyDrawer extends StatelessWidget {
             },
           ),
           const SizedBox(height: 20,),
-          if (tokenProvider.permission! > 0) ListTile(
+          if (tokenProvider.member!.permission > 0) ListTile(
             leading: const Icon(Icons.directions_boat),
             title: const Text('배 정보'),
             onTap: () {

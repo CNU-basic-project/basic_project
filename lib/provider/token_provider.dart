@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 
+import '../domain/member.dart';
 import '../service/auth_service.dart';
 
 class TokenProvider {
 
   String? token;
-  int? id;
-  String? name;
-  int? permission;
+  Member? member;
 
   late final AuthService authService;
 
@@ -30,10 +29,8 @@ class TokenProvider {
 
   Future<void> signIn(String username, String userPassword) async {
     token = await authService.signIn(username, userPassword);
-    Map res = await authService.get(token!);
-    id = res['id'];
-    name = res['name'];
-    permission = res['permission'];
+    Map<String, dynamic> res = await authService.get(token!) as Map<String, dynamic>;
+    member = Member.fromJson(res);
   }
 
   void signOut() {
