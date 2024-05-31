@@ -14,6 +14,7 @@ class MyDrawer extends StatelessWidget {
     tokenProvider = context.read<TokenProvider>();
 
     return Drawer(
+      backgroundColor: Colors.white,
       width: 320,
       child: ListView(
         padding: EdgeInsets.zero,

@@ -3,12 +3,34 @@ import 'package:flutter/material.dart';
 import '../../common/appbar.dart';
 import '../../common/constant.dart';
 
-class ShipRegister extends StatelessWidget {
+class ShipRegister extends StatefulWidget {
   const ShipRegister({super.key});
 
   @override
+  State<ShipRegister> createState() => _ShipRegisterState();
+}
+
+class _ShipRegisterState extends State<ShipRegister> {
+  WidgetStateProperty<Color?> getBackGroundColor() {
+    return WidgetStateProperty.resolveWith<Color?>(
+          (Set<WidgetState> states) {
+            return const Color.fromRGBO(0xD9, 0xD9, 0xD9, 1);
+          }
+      //   if (states.contains(WidgetState.pressed)) {
+      //     return const Color.fromRGBO(0xD9, 0xD9, 0xD9, 0.35); // 눌림 상태에서 파란색
+      //   } else if (states.contains(WidgetState.disabled)) {
+      //     return const Color.fromRGBO(0xD9, 0xD9, 0xD9, 0.35); // 비활성 상태에서 회색
+      //   }
+      //   return const Color.fromRGBO(0xD9, 0xD9, 0xD9, 0.35); // 기본 상태에서 초록색
+      // },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: const PreferredSize(
           preferredSize: Size.fromHeight(preferredSize), child: MyAppBar()),
       body: SingleChildScrollView(
@@ -36,6 +58,7 @@ class ShipRegister extends StatelessWidget {
                   Expanded(
                     flex: 2,
                     child: SearchBar(
+                      backgroundColor: getBackGroundColor(),
                       onChanged: (value) {},
                     ),
                   ),
@@ -63,6 +86,7 @@ class ShipRegister extends StatelessWidget {
                         Expanded(
                           flex: 2,
                           child: SearchBar(
+                            backgroundColor: getBackGroundColor(),
                             onChanged: (value) {
 
                             },
@@ -75,6 +99,7 @@ class ShipRegister extends StatelessWidget {
                         Expanded(
                             flex: 2,
                             child: SearchBar(
+                              backgroundColor: getBackGroundColor(),
                               onChanged: (value) {
 
                               },
@@ -107,6 +132,7 @@ class ShipRegister extends StatelessWidget {
                           Expanded(
                               flex: 2,
                               child: SearchBar(
+                                backgroundColor: getBackGroundColor(),
                                 onChanged: (value) {
 
                                 },
@@ -143,6 +169,7 @@ class ShipRegister extends StatelessWidget {
                           Expanded(
                               flex: 2,
                               child: SearchBar(
+                                backgroundColor: getBackGroundColor(),
                                 onChanged: (value) {
 
                                 },
@@ -181,7 +208,7 @@ class ShipRegister extends StatelessWidget {
                           Expanded(
                               flex: 2,
                               child: SearchBar(
-                                backgroundColor: ,
+                                backgroundColor: getBackGroundColor(),
                                 onChanged: (value) {
 
                                 },
@@ -215,19 +242,32 @@ class ShipRegister extends StatelessWidget {
                       )),
                   Expanded(
                       flex: 2,
-                      child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.grey[700],
-                            borderRadius: BorderRadius.circular(30),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: 2,
-                                blurRadius: 7,
-                                offset: Offset(0, 3), // changes position of shadow
+                      child: GestureDetector(
+                        onTap: () {
+
+                        },
+                        child: Container(
+                            child: Center(
+                              child: IconButton(
+                                onPressed: () {
+                                  return;
+                                },
+                                icon: const Icon(Icons.add_a_photo_outlined, color: Constant.COLOR,),
                               ),
-                            ],
-                          ),
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.grey[700],
+                              borderRadius: BorderRadius.circular(30),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Color.fromRGBO(0xD9, 0xD9, 0xD9, 1),
+                                  spreadRadius: 2,
+                                  blurRadius: 7,
+                                  offset: Offset(0, 3), // changes position of shadow
+                                ),
+                              ],
+                            ),
+                        ),
                       )
                   ),
                 ],

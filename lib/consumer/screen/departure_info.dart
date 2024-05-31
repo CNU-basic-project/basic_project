@@ -50,6 +50,7 @@ class ConsumerDepartureInfo extends StatelessWidget {
     var f = NumberFormat.currency(locale: "ko_KR", symbol: "￦");
 
     return Scaffold(
+      backgroundColor: Colors.white,
         appBar: const PreferredSize(
           preferredSize: Size.fromHeight(preferredSize),
           child: MyAppBar()

@@ -30,6 +30,7 @@ class _CaptainMainState extends State<CaptainMain> {
     tokenProvider = context.read<TokenProvider>();
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: const PreferredSize(
           preferredSize: Size.fromHeight(preferredSize),
           child: MyAppBar()

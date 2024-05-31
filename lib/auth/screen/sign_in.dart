@@ -30,6 +30,7 @@ class SignIn extends StatelessWidget {
     _setInstance(context);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Center(
           child: Column(

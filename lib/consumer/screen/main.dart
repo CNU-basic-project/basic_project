@@ -50,6 +50,7 @@ class _ConsumerMainState extends State<ConsumerMain> {
     serviceProvider = context.read<ServiceProvider>();
 
     return Scaffold(
+        backgroundColor: Colors.white,
       appBar: const PreferredSize(
           preferredSize: Size.fromHeight(preferredSize),
           child: MyAppBar()
