@@ -1,4 +1,4 @@
-import 'package:basicfirebase/captain/screen/ship_register.dart';
+import 'package:basicfirebase/captain/screen/departure_register.dart';
 import 'package:basicfirebase/captain/widget/ship_list_tile.dart';
 import 'package:basicfirebase/common/constant.dart';
 import 'package:basicfirebase/common/drawer.dart';
