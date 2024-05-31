@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 
 import '../../common/appbar.dart';
-import '../../common/constant.dart';
 
-class ShipRegister extends StatefulWidget {
-  const ShipRegister({super.key});
+class DepartureRegister extends StatefulWidget {
+  const DepartureRegister({super.key});
 
   @override
-  State<ShipRegister> createState() => _ShipRegisterState();
+  State<DepartureRegister> createState() => _DepartureRegisterState();
 }
 
-class _ShipRegisterState extends State<ShipRegister> {
+class _DepartureRegisterState extends State<DepartureRegister> {
   WidgetStateProperty<Color?> getBackGroundColor() {
     return WidgetStateProperty.resolveWith<Color?>(
           (Set<WidgetState> states) {

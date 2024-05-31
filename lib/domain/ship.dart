@@ -1,4 +1,5 @@
 import 'package:basicfirebase/domain/member.dart';
+import 'package:intl/intl.dart';
 
 class Ship {
 
@@ -6,6 +7,7 @@ class Ship {
   int speed, seats;
   String name, imagePath, type;
   double weight, length, width, height;
+  DateTime launchDate;
   final Member owner;
 
   Ship({
@@ -19,10 +21,14 @@ class Ship {
     required this.length,
     required this.width,
     required this.height,
+    required this.launchDate,
     required this.owner,
   });
 
   factory Ship.fromJson(Map<String, dynamic> json) {
+
+    json['launchDate'] = DateFormat("yyyy-MM-dd").parse(json['launchDate']);
+
     return Ship(
       id : json['id'],
       speed : json['speed'],
@@ -34,6 +40,7 @@ class Ship {
       length : json['length'],
       width : json['width'],
       height : json['height'],
+      launchDate: json['launchDate'],
       owner : Member.fromJson(json['owner']),
     );
   }
@@ -49,6 +56,8 @@ class Ship {
       "length" : length,
       "width" : width,
       "height" : height,
+      "launchDate" : launchDate,
+      "owner" : owner.toJson(),
     };
   }
 }
