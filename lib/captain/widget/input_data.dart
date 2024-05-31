@@ -10,14 +10,13 @@ class InputData extends StatelessWidget {
   final String title;
   final Function(String) onChanged;
 
-  WidgetStateProperty<Color?> getBackGroundColor() {
-    return WidgetStateProperty.resolveWith<Color?>(
-            (Set<WidgetState> states) {
+  MaterialStateProperty<Color?> getBackGroundColor() {
+    return MaterialStateProperty.resolveWith<Color?>(
+            (Set<MaterialState> states) {
           return const Color.fromRGBO(0xD9, 0xD9, 0xD9, 1);
         }
     );
   }
-
 
   @override
   Widget build(BuildContext context) {

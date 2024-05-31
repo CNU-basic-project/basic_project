@@ -7,7 +7,7 @@ class Ship {
   int speed, seats;
   String name, imagePath, type;
   double weight, length, width, height;
-  DateTime launchDate;
+  DateTime launchDate, checkDate;
   final Member owner;
 
   Ship({
@@ -22,12 +22,14 @@ class Ship {
     required this.width,
     required this.height,
     required this.launchDate,
+    required this.checkDate,
     required this.owner,
   });
 
   factory Ship.fromJson(Map<String, dynamic> json) {
 
     json['launchDate'] = DateFormat("yyyy-MM-dd").parse(json['launchDate']);
+    json['checkDate'] = DateFormat("yyyy-MM-dd").parse(json['checkDate']);
 
     return Ship(
       id : json['id'],
@@ -41,6 +43,7 @@ class Ship {
       width : json['width'],
       height : json['height'],
       launchDate: json['launchDate'],
+      checkDate: json['checkDate'],
       owner : Member.fromJson(json['owner']),
     );
   }
@@ -56,7 +59,8 @@ class Ship {
       "length" : length,
       "width" : width,
       "height" : height,
-      "launchDate" : launchDate,
+      "launchDate" : DateFormat("yyyy-MM-dd").format(launchDate),
+      "checkDate" : DateFormat("yyyy-MM-dd").format(checkDate),
       "owner" : owner.toJson(),
     };
   }

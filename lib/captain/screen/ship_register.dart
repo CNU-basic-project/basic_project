@@ -1,4 +1,6 @@
 import 'package:basicfirebase/captain/widget/input_data.dart';
+import 'package:basicfirebase/common/API.dart';
+import 'package:basicfirebase/provider/notifier_provider.dart';
 import 'package:basicfirebase/provider/service_provider.dart';
 import 'package:basicfirebase/provider/token_provider.dart';
 import 'package:flutter/material.dart';
@@ -15,10 +17,11 @@ class ShipRegister extends StatelessWidget {
 
   late ServiceProvider serviceProvider;
   late TokenProvider tokenProvider;
+  late NotifierProvider notifierProvider;
 
-  WidgetStateProperty<Color?> getBackGroundColor() {
-    return WidgetStateProperty.resolveWith<Color?>(
-            (Set<WidgetState> states) {
+  MaterialStateProperty<Color?> getBackGroundColor() {
+    return MaterialStateProperty.resolveWith<Color?>(
+            (Set<MaterialState> states) {
           return const Color.fromRGBO(0xD9, 0xD9, 0xD9, 1);
         }
     );
@@ -45,7 +48,7 @@ class ShipRegister extends StatelessWidget {
 
     serviceProvider = context.read<ServiceProvider>();
     tokenProvider = context.read<TokenProvider>();
-
+    notifierProvider = context.read<NotifierProvider>();
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -128,20 +131,19 @@ class ShipRegister extends StatelessWidget {
                     speed : int.parse(speed),
                     seats : int.parse(seats),
                     name : name,
-                    imagePath: "",
+                    imagePath: BASIC_IMAGE_PATH,
                     type : type,
                     weight: double.parse(weight),
                     length: double.parse(length),
                     width: double.parse(width),
                     height: double.parse(height),
                     launchDate: DateFormat("yyyy-MM-dd").parse(launchDate),
-                    owner: Member.fromJson({
-                      "id" : tokenProvider.id,
-                      "name" : tokenProvider.name,
-                    })
+                    checkDate: DateFormat("yyyy-MM-dd").parse(launchDate),
+                    owner: tokenProvider.member!
 
                   );
                   serviceProvider.shipService.add(tokenProvider.token!, ship);
+                  notifierProvider.render();
                   Navigator.pop(context);
 
                 },

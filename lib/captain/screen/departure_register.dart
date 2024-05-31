@@ -10,18 +10,12 @@ class DepartureRegister extends StatefulWidget {
 }
 
 class _DepartureRegisterState extends State<DepartureRegister> {
-  WidgetStateProperty<Color?> getBackGroundColor() {
-    return WidgetStateProperty.resolveWith<Color?>(
-          (Set<WidgetState> states) {
-            return const Color.fromRGBO(0xD9, 0xD9, 0xD9, 1);
-          }
-      //   if (states.contains(WidgetState.pressed)) {
-      //     return const Color.fromRGBO(0xD9, 0xD9, 0xD9, 0.35); // 눌림 상태에서 파란색
-      //   } else if (states.contains(WidgetState.disabled)) {
-      //     return const Color.fromRGBO(0xD9, 0xD9, 0xD9, 0.35); // 비활성 상태에서 회색
-      //   }
-      //   return const Color.fromRGBO(0xD9, 0xD9, 0xD9, 0.35); // 기본 상태에서 초록색
-      // },
+
+  MaterialStateProperty<Color?> getBackGroundColor() {
+    return MaterialStateProperty.resolveWith<Color?>(
+            (Set<MaterialState> states) {
+          return const Color.fromRGBO(0xD9, 0xD9, 0xD9, 1);
+        }
     );
   }
 

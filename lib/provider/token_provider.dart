@@ -15,14 +15,6 @@ class TokenProvider {
     required this.authService,
   });
 
-  void setToken(String token) {
-    this.token = token;
-  }
-
-  String? getToken() {
-    return token;
-  }
-
   Future<void> signUp(String name, String username, String userPassword) async {
     await authService.signUp(name, username, userPassword);
   }

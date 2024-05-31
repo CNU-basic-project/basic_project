@@ -10,6 +10,7 @@ import 'package:provider/provider.dart';
 
 import '../../common/appbar.dart';
 import '../../domain/ship.dart';
+import '../../provider/notifier_provider.dart';
 
 class CaptainMain extends StatefulWidget {
   const CaptainMain({super.key});
@@ -37,52 +38,67 @@ class _CaptainMainState extends State<CaptainMain> {
       ),
       endDrawer: MyDrawer(),
 
-      body: SizedBox(
-        height: MediaQuery.of(context).size.height - preferredSize,
-        child: Column(
-          children: [
-            const SizedBox(height: 10,),
-            ListTile(
-              leading: const Text("배 정보", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-              trailing: IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      NoAnimationRouteBuilder(builder: (builder) => ShipRegister())
-                    );
-                  },
-                  icon: const Icon(Icons.add_circle_outline_rounded, color: Constant.COLOR,)
-              ),
-            ),
-            const SizedBox(height: 10,),
-            SizedBox(
-              height: MediaQuery.of(context).size.height - 150,
-              child: FutureBuilder(
-                future: serviceProvider.shipService.get(tokenProvider.token!),
-                builder: (context, snapshot) {
-                  if (snapshot.hasData == false || snapshot.hasError) {
-                    return const CircularProgressIndicator();
-                  }
+      body: Consumer<NotifierProvider>(
+        builder: (_, notifier, __) {
+          child:
+          return SizedBox(
+            height: MediaQuery
+                .of(context)
+                .size
+                .height - preferredSize,
+            child: Column(
+              children: [
+                const SizedBox(height: 10,),
+                ListTile(
+                  leading: const Text("배 정보", style: TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),),
+                  trailing: IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            NoAnimationRouteBuilder(builder: (builder) =>
+                                ShipRegister())
+                        );
+                      },
+                      icon: const Icon(Icons.add_circle_outline_rounded,
+                        color: Constant.COLOR,)
+                  ),
+                ),
+                const SizedBox(height: 10,),
+                SizedBox(
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height - 150,
+                  child: FutureBuilder(
+                    future: serviceProvider.shipService.get(
+                        tokenProvider.token!),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData == false || snapshot.hasError) {
+                        return const CircularProgressIndicator();
+                      }
 
-                  List<Ship> ships = snapshot.data!;
+                      List<Ship> ships = snapshot.data!;
 
-                  return ListView.separated(
-                    itemCount: ships.length,
-                    itemBuilder: (BuildContext ctx, int idx) {
-                      return ShipListTile(
-                        ship: ships[idx],
+                      return ListView.separated(
+                        itemCount: ships.length,
+                        itemBuilder: (BuildContext ctx, int idx) {
+                          return ShipListTile(
+                            ship: ships[idx],
+                          );
+                        },
+                        separatorBuilder: (BuildContext ctx, int idx) {
+                          return const Divider();
+                        },
                       );
                     },
-                    separatorBuilder: (BuildContext ctx, int idx) {
-                      return const Divider();
-                    },
-                  );
-                },
-              ),
-            ),
+                  ),
+                ),
 
-          ],
-        ),
+              ],
+            ),
+          );
+        }
       ),
 
     );
