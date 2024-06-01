@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../../common/appbar.dart';
+import '../../domain/ship.dart';
 
 class DepartureRegister extends StatefulWidget {
-  const DepartureRegister({super.key});
+
+  final Ship ship;
+
+  const DepartureRegister({super.key, required this.ship});
 
   @override
   State<DepartureRegister> createState() => _DepartureRegisterState();

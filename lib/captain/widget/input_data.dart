@@ -5,9 +5,10 @@ class InputData extends StatelessWidget {
     super.key,
     required this.title,
     required this.onChanged,
+    required this.text,
   });
 
-  final String title;
+  final String title, text;
   final Function(String) onChanged;
 
   MaterialStateProperty<Color?> getBackGroundColor() {
@@ -20,6 +21,9 @@ class InputData extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final TextEditingController controller = TextEditingController(text: text);
+
     return SizedBox(
       height: 40,
       child: Row(
@@ -35,6 +39,7 @@ class InputData extends StatelessWidget {
           Expanded(
             flex: 2,
             child: SearchBar(
+              controller: controller,
               backgroundColor: getBackGroundColor(),
               onChanged: onChanged,
             ),

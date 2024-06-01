@@ -56,6 +56,7 @@ class MyDrawer extends StatelessWidget {
             leading: const Icon(Icons.directions_boat),
             title: const Text('배 정보'),
             onTap: () {
+              Navigator.pop(context);
               Navigator.push(
                 context,
                 NoAnimationRouteBuilder(builder: (builder) => CaptainMain())

@@ -69,14 +69,14 @@ class ConsumerDepartureInfo extends StatelessWidget {
                   ),
                 ),
                 onTap: () {
-                  // TODO Navigate to Detail Page using Function
+                  // TODO Navigate to Detail Page (probability) using Function
                 },
               ),
               const SizedBox(height: 10,),
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    // TODO Navigate to Detail Page using Function
+                    // TODO Navigate to Detail Page (probability) using Function
                   },
                   child: Column(
                     children: [

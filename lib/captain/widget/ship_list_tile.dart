@@ -1,4 +1,6 @@
+import 'package:basicfirebase/captain/screen/ship_register.dart';
 import 'package:basicfirebase/common/constant.dart';
+import 'package:basicfirebase/common/no_animation_route_button.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/ship.dart';
@@ -23,7 +25,10 @@ class ShipListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () {
-        // TODO move to ship_info which has departure button
+        Navigator.push(
+          context,
+          NoAnimationRouteBuilder(builder: (builder) => ShipRegister(ship: ship))
+        );
       },
       leading: Container(
         width: 100.0,

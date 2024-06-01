@@ -57,7 +57,7 @@ class _CaptainMainState extends State<CaptainMain> {
                         Navigator.push(
                             context,
                             NoAnimationRouteBuilder(builder: (builder) =>
-                                ShipRegister())
+                                ShipRegister(ship: null,))
                         );
                       },
                       icon: const Icon(Icons.add_circle_outline_rounded,
