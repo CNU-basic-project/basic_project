@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../common/appbar.dart';
+import '../../common/constant.dart';
+import '../../domain/departure.dart';
 import '../../domain/ship.dart';
 
 class DepartureRegister extends StatefulWidget {
@@ -23,16 +26,40 @@ class _DepartureRegisterState extends State<DepartureRegister> {
     );
   }
 
-  String name = '';
   String departure = '';
   String arrival = '';
-  String departureTime = '';
-  String arrivalTime = '';
-  String price = '';
+  DateTime date = DateTime.now();
+  DateTime departureTime = DateTime.now();
+  DateTime arrivalTime = DateTime.now();
+  String price = '10000';
 
+  void _departureChange(String departure) {
+    this.departure = departure;
+  }
+
+  void _arrivalChange(String arrival) {
+    this.arrival = arrival;
+  }
+
+  void _priceChange(String price) {
+    this.price = price;
+  }
+
+  bool validate() {
+    try {
+      int.parse(price);
+    } catch (e) {
+      return false;
+    }
+    return true;
+  }
 
   @override
   Widget build(BuildContext context) {
+
+    final TextEditingController departureTimeController = TextEditingController(text: DateFormat("HH:mm").format(departureTime));
+    final TextEditingController arrivalTimeController = TextEditingController(text: DateFormat("HH:mm").format(arrivalTime));
+    final TextEditingController dateController = TextEditingController(text: DateFormat("yyyy-MM-dd").format(date));
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -56,30 +83,6 @@ class _DepartureRegisterState extends State<DepartureRegister> {
                       flex: 1,
                       child: Center(
                         child: Text(
-                          "이름",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      )),
-                  Expanded(
-                    flex: 2,
-                    child: SearchBar(
-                      backgroundColor: getBackGroundColor(),
-                      onChanged: (value) {},
-                    ),
-                  ),
-                ],
-              ),
-            ), // 이름
-
-            const SizedBox(height: 10,),
-            SizedBox(
-              height: 40,
-              child: Row(
-                children: [
-                  const Expanded(
-                      flex: 1,
-                      child: Center(
-                        child: Text(
                           "운행 경로",
                           style: TextStyle(fontSize: 16),
                         ),
@@ -92,9 +95,7 @@ class _DepartureRegisterState extends State<DepartureRegister> {
                           flex: 2,
                           child: SearchBar(
                             backgroundColor: getBackGroundColor(),
-                            onChanged: (value) {
-
-                            },
+                            onChanged: _arrivalChange,
                           )
                         ),
                         const Expanded(
@@ -105,9 +106,8 @@ class _DepartureRegisterState extends State<DepartureRegister> {
                             flex: 2,
                             child: SearchBar(
                               backgroundColor: getBackGroundColor(),
-                              onChanged: (value) {
+                              onChanged: _departureChange,
 
-                              },
                             )
                         ),
                       ],
@@ -116,6 +116,57 @@ class _DepartureRegisterState extends State<DepartureRegister> {
                 ],
               ),
             ), // 운행 경로
+
+            const SizedBox(height: 10,),
+            SizedBox(
+              height: 40,
+              child: Row(
+                children: [
+                  const Expanded(
+                      flex: 1,
+                      child: Center(
+                        child: Center(
+                          child: Text(
+                            "운행 날짜",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      )),
+                  Expanded(
+                      flex: 2,
+                      child: Row(
+                        children: [
+                          Expanded(
+                              flex: 2,
+                              child: SearchBar(
+                                controller: dateController,
+                                backgroundColor: getBackGroundColor(),
+                                trailing: [
+                                  IconButton(
+                                      onPressed: () {
+                                        showDatePicker(context: context, firstDate: DateTime(2000), lastDate: DateTime(2050)).then((selected) {
+                                          setState(() {
+                                            if (selected == null) return;
+                                            date = selected;
+                                            dateController.text = DateFormat("yyyy-MM-dd").format(date);
+                                          });
+                                        });
+                                      },
+                                      icon: const Icon(Icons.access_time_rounded, color: Colors.deepPurple, size: 30,)
+                                  ),
+                                ],
+                              )
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: Container(),
+                          ),
+                        ],
+                      )
+                  ),
+                ],
+              ),
+            ), // 날짜
 
             const SizedBox(height: 10,),
             SizedBox(
@@ -137,10 +188,22 @@ class _DepartureRegisterState extends State<DepartureRegister> {
                           Expanded(
                               flex: 2,
                               child: SearchBar(
+                                controller: departureTimeController,
                                 backgroundColor: getBackGroundColor(),
-                                onChanged: (value) {
-
-                                },
+                                trailing: [
+                                  IconButton(
+                                      onPressed: () {
+                                        showTimePicker(context: context, initialTime: TimeOfDay(hour: departureTime.hour, minute: departureTime.minute)).then((selected) {
+                                          if (selected == null) return;
+                                          setState(() {
+                                            departureTime = DateTime(0, 0, 0, selected.hour, selected.minute);
+                                            departureTimeController.text = DateFormat("HH:mm").format(departureTime);
+                                          });
+                                        });
+                                      },
+                                      icon: const Icon(Icons.access_time_rounded, color: Colors.deepPurple, size: 30,)
+                                  ),
+                                ],
                               )
                           ),
                           const Expanded(
@@ -150,10 +213,22 @@ class _DepartureRegisterState extends State<DepartureRegister> {
                           Expanded(
                               flex: 2,
                               child: SearchBar(
+                                  controller: arrivalTimeController,
                                 backgroundColor: getBackGroundColor(),
-                                onChanged: (value) {
-
-                                },
+                                trailing: [
+                                  IconButton(
+                                      onPressed: () {
+                                        showTimePicker(context: context, initialTime: TimeOfDay(hour: arrivalTime.hour, minute: arrivalTime.minute)).then((selected) {
+                                          setState(() {
+                                            if (selected == null) return;
+                                            arrivalTime = DateTime(0, 0, 0, selected.hour, selected.minute, 0);
+                                            arrivalTimeController.text = DateFormat("HH:mm").format(arrivalTime);
+                                          });
+                                        });
+                                      },
+                                      icon: const Icon(Icons.access_time_rounded, color: Colors.deepPurple, size: 30,)
+                                  ),
+                                ],
                               )
                           ),
                         ],
@@ -162,43 +237,6 @@ class _DepartureRegisterState extends State<DepartureRegister> {
                 ],
               ),
             ), // 운행 시간
-
-            const SizedBox(height: 10,),
-            SizedBox(
-              height: 40,
-              child: Row(
-                children: [
-                  const Expanded(
-                      flex: 1,
-                      child: Center(
-                        child: Text(
-                          "좌석 수",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      )),
-                  Expanded(
-                      flex: 2,
-                      child: Row(
-                        children: [
-                          Expanded(
-                              flex: 2,
-                              child: SearchBar(
-                                backgroundColor: getBackGroundColor(),
-                                onChanged: (value) {
-
-                                },
-                              )
-                          ),
-                          Expanded(
-                            flex: 3,
-                            child: Container(),
-                          ),
-                        ],
-                      )
-                  ),
-                ],
-              ),
-            ), // 좌석 수
 
             const SizedBox(height: 10,),
             SizedBox(
@@ -222,10 +260,9 @@ class _DepartureRegisterState extends State<DepartureRegister> {
                           Expanded(
                               flex: 2,
                               child: SearchBar(
+                                controller: TextEditingController(text: price),
                                 backgroundColor: getBackGroundColor(),
-                                onChanged: (value) {
-
-                                },
+                                onChanged: _priceChange,
                               )
                           ),
                           Expanded(
@@ -271,7 +308,7 @@ class _DepartureRegisterState extends State<DepartureRegister> {
                               ),
                             ),
                             decoration: BoxDecoration(
-                              color: Color.fromRGBO(0xD9, 0xD9, 0xD9, 1),
+                              color: const Color.fromRGBO(0xD9, 0xD9, 0xD9, 1),
                               borderRadius: BorderRadius.circular(30),
                               boxShadow: const [
                                 BoxShadow(
@@ -289,6 +326,36 @@ class _DepartureRegisterState extends State<DepartureRegister> {
               ),
             ), // 사진
 
+            const SizedBox(height: 20,),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(backgroundColor: Constant.COLOR),
+              onPressed: () async {
+
+                if (!validate()) {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text("입력이 올바르지 않습니다"),
+                    backgroundColor: Colors.blue,
+                  ));
+                  return;
+                }
+
+                Departure(
+                  id: 0,
+                  arrivals: arrival,
+                  arrivalTime: arrivalTime,
+                  departures: departure,
+                  departureTime: departureTime,
+                  date: date,
+                  seat: 0,
+                  price: int.parse(price),
+                  ship: widget.ship,
+                );
+
+                Navigator.pop(context);
+
+              },
+              child: const Text("등록", style: TextStyle(color: Colors.white),),
+            ), // TODO add, update?, delete?, show departure list and add or update || delete
           ],
         ),
       ),
