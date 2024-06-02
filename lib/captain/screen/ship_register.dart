@@ -1,4 +1,3 @@
-import 'package:basicfirebase/captain/screen/departure_register.dart';
 import 'package:basicfirebase/captain/widget/input_data.dart';
 import 'package:basicfirebase/common/API.dart';
 import 'package:basicfirebase/common/no_animation_route_button.dart';
@@ -11,8 +10,8 @@ import 'package:provider/provider.dart';
 
 import '../../common/appbar.dart';
 import '../../common/constant.dart';
-import '../../domain/member.dart';
 import '../../domain/ship.dart';
+import 'departure_list.dart';
 
 class ShipRegister extends StatelessWidget {
 
@@ -112,9 +111,9 @@ class ShipRegister extends StatelessWidget {
           ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: Constant.COLOR), onPressed: () {
             Navigator.push(
               context,
-              NoAnimationRouteBuilder(builder: (builder) => DepartureRegister(ship: ship!))
+              NoAnimationRouteBuilder(builder: (builder) => DepartureList(ship: ship!))
             );
-          }, child: const Text("출항 등록", style: TextStyle(color: Colors.white)),
+          }, child: const Text("출항", style: TextStyle(color: Colors.white)),
           ),
           ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: Constant.COLOR), onPressed: () {
 

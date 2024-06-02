@@ -9,8 +9,9 @@ import '../../domain/ship.dart';
 class DepartureRegister extends StatefulWidget {
 
   final Ship ship;
+  final Departure departure;
 
-  const DepartureRegister({super.key, required this.ship});
+  const DepartureRegister({super.key, required this.ship, required this.departure});
 
   @override
   State<DepartureRegister> createState() => _DepartureRegisterState();

@@ -48,14 +48,9 @@ class ShipListTile extends StatelessWidget {
           Text(ship.name,
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
-          //reservation != null ? const Icon(Icons.check, color: Colors.green,) : const Text(""),
         ],
       ),
-      // subtitle: Text("$date ${convertTimeFormat(departure.departureTime)} ~ ${convertTimeFormat(departure.arrivalTime)}\n${departure.departures} -> ${departure.arrivals}",
-      //   style: const TextStyle(fontSize: 16),
-      // ),
       trailing: const Icon(Icons.drive_file_move_outlined, color: Constant.COLOR,),
-      // trailing: Text("${departure.seat} / ${departure.ship.seats}"),
     );
   }
 }

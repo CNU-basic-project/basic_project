@@ -2,6 +2,7 @@ import 'package:basicfirebase/service/http_service.dart';
 import 'package:intl/intl.dart';
 
 import '../domain/departure.dart';
+import '../domain/ship.dart';
 
 class DepartureService {
 
@@ -27,8 +28,17 @@ class DepartureService {
     return _convert(response);
   }
 
+  Future<List<Departure>> findAllByShip(Ship ship) async {
+    Map response = await HttpService.get("", "/departures/ship/${ship.id}");
+    return _convert(response);
+  }
+
   void add(String token, Departure departure) async {
     HttpService.post(token, "/departures", departure.toJson());
+  }
+
+  void delete(String token, Departure departure) async {
+    HttpService.delete(token, "/departures/${departure.id}");
   }
 
   List<Departure> _convert(Map response) {
