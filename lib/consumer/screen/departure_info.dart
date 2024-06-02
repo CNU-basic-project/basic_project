@@ -96,7 +96,7 @@ class ConsumerDepartureInfo extends StatelessWidget {
                 },
               ),
               const SizedBox(height: 10,),
-              ConsumerShipInfoTile(title: "운행 경로", trailing: "${departure.arrivals} -> ${departure.departures}",
+              ConsumerShipInfoTile(title: "운행 경로", trailing: "${departure.departures} -> ${departure.arrivals}",
                 onTap: () {
                   Navigator.push(
                     context,
@@ -158,6 +158,7 @@ class ConsumerDepartureInfo extends StatelessWidget {
                           );
                         },
                       );
+                      return;
                     }
 
                     showDialog(

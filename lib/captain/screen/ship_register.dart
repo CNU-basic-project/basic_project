@@ -126,11 +126,11 @@ class ShipRegister extends StatelessWidget {
                   content: Text("정말로 [${ship!.name}] 삭제하겠습니까?"),
                   actions: [
                     ElevatedButton(
-                      onPressed: () {
-                        serviceProvider.shipService.delete(tokenProvider.token!, ship!);
+                      onPressed: () async {
+                        await serviceProvider.shipService.delete(tokenProvider.token!, ship!);
                         notifierProvider.render();
-                        Navigator.pop(ctx);
-                        Navigator.pop(context);
+                        if (ctx.mounted) Navigator.pop(ctx);
+                        if (context.mounted) Navigator.pop(context);
                       },
                       style: ElevatedButton.styleFrom(
                           backgroundColor: Constant.COLOR

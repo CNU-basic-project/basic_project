@@ -32,6 +32,7 @@ class HttpService {
     );
 
     if (response.statusCode >= 400) {
+      print(utf8.decode(response.bodyBytes));
       throw HttpServiceException(response);
     }
   }
