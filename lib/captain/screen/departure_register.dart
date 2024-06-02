@@ -1,5 +1,9 @@
+import 'package:basicfirebase/provider/notifier_provider.dart';
+import 'package:basicfirebase/provider/service_provider.dart';
+import 'package:basicfirebase/provider/token_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 import '../../common/appbar.dart';
 import '../../common/constant.dart';
@@ -9,7 +13,7 @@ import '../../domain/ship.dart';
 class DepartureRegister extends StatefulWidget {
 
   final Ship ship;
-  final Departure departure;
+  final Departure? departure;
 
   const DepartureRegister({super.key, required this.ship, required this.departure});
 
@@ -18,6 +22,10 @@ class DepartureRegister extends StatefulWidget {
 }
 
 class _DepartureRegisterState extends State<DepartureRegister> {
+
+  late ServiceProvider serviceProvider;
+  late TokenProvider tokenProvider;
+  late NotifierProvider notifierProvider;
 
   MaterialStateProperty<Color?> getBackGroundColor() {
     return MaterialStateProperty.resolveWith<Color?>(
@@ -58,6 +66,19 @@ class _DepartureRegisterState extends State<DepartureRegister> {
   @override
   Widget build(BuildContext context) {
 
+    serviceProvider = context.read<ServiceProvider>();
+    tokenProvider = context.read<TokenProvider>();
+    notifierProvider = context.read<NotifierProvider>();
+
+    if (widget.departure != null) {
+      departure = widget.departure!.departures;
+      arrival = widget.departure!.arrivals;
+      date = widget.departure!.date;
+      departureTime = widget.departure!.departureTime;
+      arrivalTime = widget.departure!.arrivalTime;
+      price = widget.departure!.price.toString();
+    }
+
     final TextEditingController departureTimeController = TextEditingController(text: DateFormat("HH:mm").format(departureTime));
     final TextEditingController arrivalTimeController = TextEditingController(text: DateFormat("HH:mm").format(arrivalTime));
     final TextEditingController dateController = TextEditingController(text: DateFormat("yyyy-MM-dd").format(date));
@@ -71,11 +92,11 @@ class _DepartureRegisterState extends State<DepartureRegister> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              "기본 정보",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            Text(
+              "${widget.ship.name} 출항 정보",
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 20,),
+            const SizedBox(height: 30,),
             SizedBox(
               height: 40,
               child: Row(
@@ -95,8 +116,9 @@ class _DepartureRegisterState extends State<DepartureRegister> {
                         Expanded(
                           flex: 2,
                           child: SearchBar(
+                            controller: TextEditingController(text: departure),
                             backgroundColor: getBackGroundColor(),
-                            onChanged: _arrivalChange,
+                            onChanged: _departureChange,
                           )
                         ),
                         const Expanded(
@@ -106,8 +128,9 @@ class _DepartureRegisterState extends State<DepartureRegister> {
                         Expanded(
                             flex: 2,
                             child: SearchBar(
+                              controller: TextEditingController(text: arrival),
                               backgroundColor: getBackGroundColor(),
-                              onChanged: _departureChange,
+                              onChanged: _arrivalChange,
 
                             )
                         ),
@@ -135,32 +158,19 @@ class _DepartureRegisterState extends State<DepartureRegister> {
                       )),
                   Expanded(
                       flex: 2,
-                      child: Row(
-                        children: [
-                          Expanded(
-                              flex: 2,
-                              child: SearchBar(
-                                controller: dateController,
-                                backgroundColor: getBackGroundColor(),
-                                trailing: [
-                                  IconButton(
-                                      onPressed: () {
-                                        showDatePicker(context: context, firstDate: DateTime(2000), lastDate: DateTime(2050)).then((selected) {
-                                          setState(() {
-                                            if (selected == null) return;
-                                            date = selected;
-                                            dateController.text = DateFormat("yyyy-MM-dd").format(date);
-                                          });
-                                        });
-                                      },
-                                      icon: const Icon(Icons.access_time_rounded, color: Colors.deepPurple, size: 30,)
-                                  ),
-                                ],
-                              )
-                          ),
-                          Expanded(
-                            flex: 3,
-                            child: Container(),
+                      child: SearchBar(
+                        controller: dateController,
+                        backgroundColor: getBackGroundColor(),
+                        trailing: [
+                          IconButton(
+                              onPressed: () {
+                                showDatePicker(context: context, firstDate: DateTime(2000), lastDate: DateTime(2050)).then((selected) {
+                                  if (selected == null) return;
+                                  date = selected;
+                                  dateController.text = DateFormat("yyyy-MM-dd").format(date);
+                                });
+                              },
+                              icon: const Icon(Icons.date_range, color: Colors.deepPurple, size: 30,)
                           ),
                         ],
                       )
@@ -196,10 +206,8 @@ class _DepartureRegisterState extends State<DepartureRegister> {
                                       onPressed: () {
                                         showTimePicker(context: context, initialTime: TimeOfDay(hour: departureTime.hour, minute: departureTime.minute)).then((selected) {
                                           if (selected == null) return;
-                                          setState(() {
-                                            departureTime = DateTime(0, 0, 0, selected.hour, selected.minute);
-                                            departureTimeController.text = DateFormat("HH:mm").format(departureTime);
-                                          });
+                                          departureTime = DateTime(0, 0, 0, selected.hour, selected.minute);
+                                          departureTimeController.text = DateFormat("HH:mm").format(departureTime);
                                         });
                                       },
                                       icon: const Icon(Icons.access_time_rounded, color: Colors.deepPurple, size: 30,)
@@ -220,11 +228,9 @@ class _DepartureRegisterState extends State<DepartureRegister> {
                                   IconButton(
                                       onPressed: () {
                                         showTimePicker(context: context, initialTime: TimeOfDay(hour: arrivalTime.hour, minute: arrivalTime.minute)).then((selected) {
-                                          setState(() {
-                                            if (selected == null) return;
-                                            arrivalTime = DateTime(0, 0, 0, selected.hour, selected.minute, 0);
-                                            arrivalTimeController.text = DateFormat("HH:mm").format(arrivalTime);
-                                          });
+                                          if (selected == null) return;
+                                          arrivalTime = DateTime(0, 0, 0, selected.hour, selected.minute, 0);
+                                          arrivalTimeController.text = DateFormat("HH:mm").format(arrivalTime);
                                         });
                                       },
                                       icon: const Icon(Icons.access_time_rounded, color: Colors.deepPurple, size: 30,)
@@ -325,38 +331,81 @@ class _DepartureRegisterState extends State<DepartureRegister> {
                   ),
                 ],
               ),
-            ), // 사진
+            ), // TODO 사진을 ship_register로
 
-            const SizedBox(height: 20,),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(backgroundColor: Constant.COLOR),
-              onPressed: () async {
+            const SizedBox(height: 30,),
+            Center(
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(backgroundColor: Constant.COLOR),
+                onPressed: () async {
 
-                if (!validate()) {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text("입력이 올바르지 않습니다"),
-                    backgroundColor: Colors.blue,
-                  ));
-                  return;
-                }
+                  if (widget.departure != null) {
+                    showDialog(
+                      barrierDismissible: false,
+                      context: context,
+                      builder: (ctx) {
+                        return AlertDialog(
+                          backgroundColor: Colors.white,
+                          content: const Text("정말로 삭제하겠습니까?"),
+                          actions: [
+                            ElevatedButton(
+                              onPressed: () async {
 
-                Departure(
-                  id: 0,
-                  arrivals: arrival,
-                  arrivalTime: arrivalTime,
-                  departures: departure,
-                  departureTime: departureTime,
-                  date: date,
-                  seat: 0,
-                  price: int.parse(price),
-                  ship: widget.ship,
-                );
+                                await serviceProvider.departureService.delete(tokenProvider.token!, widget.departure!);
+                                notifierProvider.render();
 
-                Navigator.pop(context);
+                                if (ctx.mounted) Navigator.pop(ctx);
+                                if (context.mounted) Navigator.pop(context);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Constant.COLOR
+                              ),
+                              child: const Text("삭제", style: TextStyle(color: Colors.white),),
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(ctx);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Constant.COLOR
+                              ),
+                              child: const Text("취소", style: TextStyle(color: Colors.white),),
+                            )
+                          ],
+                        );
+                      },
+                    );
+                    return;
+                  }
 
-              },
-              child: const Text("등록", style: TextStyle(color: Colors.white),),
-            ), // TODO add, update?, delete?, show departure list and add or update || delete
+                  if (!validate()) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text("입력이 올바르지 않습니다"),
+                      backgroundColor: Colors.blue,
+                    ));
+                    return;
+                  }
+
+                  Departure newDeparture = Departure(
+                    id: 0,
+                    arrivals: arrival,
+                    arrivalTime: arrivalTime,
+                    departures: departure,
+                    departureTime: departureTime,
+                    date: date,
+                    seat: 0,
+                    price: int.parse(price),
+                    ship: widget.ship,
+                  );
+
+                  await serviceProvider.departureService.add(tokenProvider.token!, newDeparture);
+                  notifierProvider.render();
+
+                  if (context.mounted) Navigator.pop(context);
+                },
+                child: Text(widget.departure == null ? "등록" : "삭제", style: const TextStyle(color: Colors.white),),
+              ),
+            ),
           ],
         ),
       ),

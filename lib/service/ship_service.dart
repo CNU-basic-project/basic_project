@@ -4,7 +4,7 @@ import '../domain/ship.dart';
 
 class ShipService {
 
-  void add(String token, Ship ship) {
+  Future<void> add(String token, Ship ship) async {
     HttpService.post(token, "/ships", ship.toJson());
   }
   
@@ -17,11 +17,11 @@ class ShipService {
     return res;
   }
   
-  void update(String token, Ship ship) {
+  Future<void> update(String token, Ship ship) async {
     HttpService.put(token, "/ships/${ship.id}", ship.toJson());
   }
 
-  void delete(String token, Ship ship) {
+  Future<void> delete(String token, Ship ship) async {
     HttpService.delete(token, "/ships/${ship.id}");
   }
 }

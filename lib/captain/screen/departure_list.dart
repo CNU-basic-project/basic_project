@@ -7,6 +7,7 @@ import '../../common/appbar.dart';
 import '../../common/constant.dart';
 import '../../common/drawer.dart';
 import '../../common/no_animation_route_button.dart';
+import '../../domain/departure.dart';
 import '../../domain/ship.dart';
 import '../../provider/notifier_provider.dart';
 import '../../provider/service_provider.dart';
@@ -18,10 +19,10 @@ class DepartureList extends StatefulWidget {
   final Ship ship;
 
   @override
-  State<DepartureList> createState() => _CaptainMainState();
+  State<DepartureList> createState() => _DepartureList();
 }
 
-class _CaptainMainState extends State<DepartureList> {
+class _DepartureList extends State<DepartureList> {
 
   late ServiceProvider serviceProvider;
   late TokenProvider tokenProvider;
@@ -42,7 +43,6 @@ class _CaptainMainState extends State<DepartureList> {
 
       body: Consumer<NotifierProvider>(
           builder: (_, notifier, __) {
-            child:
             return SizedBox(
               height: MediaQuery
                   .of(context)
@@ -73,20 +73,20 @@ class _CaptainMainState extends State<DepartureList> {
                         .size
                         .height - 150,
                     child: FutureBuilder(
-                      future: serviceProvider.departureService.get(
-                          tokenProvider.token!),
+                      future: serviceProvider.departureService.findAllByShip(
+                          widget.ship),
                       builder: (context, snapshot) {
                         if (snapshot.hasData == false || snapshot.hasError) {
                           return const CircularProgressIndicator();
                         }
 
-                        List<Ship> ships = snapshot.data!;
+                        List<Departure> departures = snapshot.data!;
 
                         return ListView.separated(
-                          itemCount: ships.length,
+                          itemCount: departures.length,
                           itemBuilder: (BuildContext ctx, int idx) {
                             return DepartureListTile(
-                              departure: null,
+                              departure: departures[idx],
                             );
                           },
                           separatorBuilder: (BuildContext ctx, int idx) {

@@ -47,7 +47,7 @@ class DepartureListTile extends StatelessWidget {
           Text("${convertTimeFormat(departure.departureTime)} ~ ${convertTimeFormat(departure.arrivalTime)}",
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
           ),
-          Text("좌석 : ${departure.seat}/${departure.ship.seats} \n 가격 : ${f.format(departure.price)}")
+          Text("좌석 : ${departure.seat}/${departure.ship.seats} \n가격 : ${f.format(departure.price)}")
         ],
       ),
       trailing: const Icon(Icons.drive_file_move_outlined, color: Constant.COLOR,),

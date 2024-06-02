@@ -88,15 +88,15 @@ class ShipRegister extends StatelessWidget {
               launchDate: DateFormat("yyyy-MM-dd").parse(launchDate),
               checkDate: DateFormat("yyyy-MM-dd").parse(launchDate),
               owner: tokenProvider.member!
-
           );
+
           if (ship == null) {
-            serviceProvider.shipService.add(tokenProvider.token!, newShip);
+            await serviceProvider.shipService.add(tokenProvider.token!, newShip);
           } else {
-            serviceProvider.shipService.update(tokenProvider.token!, newShip);
+            await serviceProvider.shipService.update(tokenProvider.token!, newShip);
           }
           notifierProvider.render();
-          Navigator.pop(context);
+          if (context.mounted) Navigator.pop(context);
 
         },
         child: Text(ship == null ? "등록" : "수정", style: const TextStyle(color: Colors.white),),

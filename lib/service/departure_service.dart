@@ -33,12 +33,12 @@ class DepartureService {
     return _convert(response);
   }
 
-  void add(String token, Departure departure) async {
-    HttpService.post(token, "/departures", departure.toJson());
+  Future<void> add(String token, Departure departure) async {
+    return HttpService.post(token, "/departures", departure.toJson());
   }
 
-  void delete(String token, Departure departure) async {
-    HttpService.delete(token, "/departures/${departure.id}");
+  Future<void> delete(String token, Departure departure) async {
+    return HttpService.delete(token, "/departures/${departure.id}");
   }
 
   List<Departure> _convert(Map response) {

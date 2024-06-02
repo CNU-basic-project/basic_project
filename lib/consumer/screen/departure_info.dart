@@ -123,12 +123,41 @@ class ConsumerDepartureInfo extends StatelessWidget {
                     backgroundColor: Constant.COLOR,
                   ),
                   onPressed: () {
-                    String text = "예약이";
-                    if (reservation == null) {
-                      serviceProvider.reservationService.add(tokenProvider.token!, departure);
-                    } else {
-                      text = "취소가";
-                      serviceProvider.reservationService.delete(tokenProvider.token!, reservation!);
+
+                    String text = "";
+                    try {
+                      text = "예약이";
+                      if (reservation == null) {
+                        serviceProvider.reservationService.add(
+                            tokenProvider.token!, departure);
+                      } else {
+                        text = "취소가";
+                        serviceProvider.reservationService.delete(
+                            tokenProvider.token!, reservation!);
+                      }
+                    } catch (e) {
+                      showDialog(
+                        barrierDismissible: false,
+                        context: context,
+                        builder: (ctx) {
+                          return AlertDialog(
+                            backgroundColor: Colors.white,
+                            content: const Text("해당 출항 기록이 삭제되었습니다."),
+                            actions: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(ctx);
+                                  Navigator.pop(context);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: Constant.COLOR
+                                ),
+                                child: const Text("확인", style: TextStyle(color: Colors.white),),
+                              )
+                            ],
+                          );
+                        },
+                      );
                     }
 
                     showDialog(
@@ -136,7 +165,7 @@ class ConsumerDepartureInfo extends StatelessWidget {
                       context: context,
                       builder: (ctx) {
                         return AlertDialog(
-                          content: Text("${departure.ship.name}의 ${text} 완료됐습니다."),
+                          content: Text("${departure.ship.name}의 $text 완료됐습니다."),
                           actions: [
                             Center(
                               child: ElevatedButton(

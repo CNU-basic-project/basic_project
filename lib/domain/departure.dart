@@ -42,10 +42,10 @@ class Departure {
   Map<String, dynamic> toJson() {
     return {
       "price" : price,
-      "date" : date,
+      "date" : DateFormat("yyyy-MM-dd").format(date),
       "departures" : departures,
-      "arrivalTime" : arrivalTime,
-      "departureTime" : departureTime,
+      "arrivalTime" : DateFormat("HH:mm:ss").format(arrivalTime),
+      "departureTime" : DateFormat("HH:mm:ss").format(departureTime),
       "arrivals" : arrivals,
       "shipId" : ship.id,
     };

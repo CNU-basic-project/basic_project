@@ -40,7 +40,6 @@ class _CaptainMainState extends State<CaptainMain> {
 
       body: Consumer<NotifierProvider>(
         builder: (_, notifier, __) {
-          child:
           return SizedBox(
             height: MediaQuery
                 .of(context)

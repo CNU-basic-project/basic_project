@@ -15,14 +15,14 @@ class ReservationService {
     return res;
   }
 
-  void add(String token, Departure departure) {
+  Future<void> add(String token, Departure departure) async {
     HttpService.post(token, "/reservations",
         {
           'departureId' : departure.id,
         });
   }
 
-  void delete(String token, Reservation reservation) {
+  Future<void> delete(String token, Reservation reservation) async {
     HttpService.delete(token, "/reservations/${reservation.id}");
   }
 }
