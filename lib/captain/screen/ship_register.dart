@@ -23,9 +23,9 @@ class ShipRegister extends StatelessWidget {
   late TokenProvider tokenProvider;
   late NotifierProvider notifierProvider;
 
-  MaterialStateProperty<Color?> getBackGroundColor() {
-    return MaterialStateProperty.resolveWith<Color?>(
-            (Set<MaterialState> states) {
+  WidgetStateProperty<Color?> getBackGroundColor() {
+    return WidgetStateProperty.resolveWith<Color?>(
+            (Set<WidgetState> states) {
           return const Color.fromRGBO(0xD9, 0xD9, 0xD9, 1);
         }
     );
@@ -34,13 +34,13 @@ class ShipRegister extends StatelessWidget {
   String speed = "", seats = ""; // int
   String name = "", imagePath = "", type = ""; // String
   String weight = "", length = "", width = "", height = ""; // double
-  String launchDate = ""; // DateTime
+  DateTime launchDate = DateTime.now(); // DateTime
 
   bool validate() {
     try {
       int.parse(speed); int.parse(seats);
       double.parse(weight); double.parse(length); double.parse(width); double.parse(height);
-      DateFormat("yyyy-MM-dd").parse(launchDate);
+      //DateFormat("yyyy-MM-dd").parse(launchDate); // launchDate가 String 일 때
     } catch (e) {
       return false;
     }
@@ -58,8 +58,11 @@ class ShipRegister extends StatelessWidget {
       speed = ship!.speed.toString(); seats = ship!.seats.toString(); // int
       name = ship!.name; imagePath = ship!.imagePath; type = ship!.type; // String
       weight = ship!.weight.toString(); length = ship!.length.toString(); width = ship!.width.toString(); height = ship!.height.toString(); // double
-      launchDate = DateFormat("yyyy-MM-dd").format(ship!.launchDate); //
+      launchDate = ship!.launchDate;
+      //launchDate = DateFormat("yyyy-MM-dd").format(ship!.launchDate); //
     }
+
+    TextEditingController launchDateController = TextEditingController(text: DateFormat("yyyy-MM-dd").format(launchDate));
 
     Widget setButtons() {
       ElevatedButton elevatedButton = ElevatedButton(
@@ -85,8 +88,10 @@ class ShipRegister extends StatelessWidget {
               length: double.parse(length),
               width: double.parse(width),
               height: double.parse(height),
-              launchDate: DateFormat("yyyy-MM-dd").parse(launchDate),
-              checkDate: DateFormat("yyyy-MM-dd").parse(launchDate),
+              launchDate: launchDate,
+              checkDate: ship == null ? launchDate : ship!.checkDate,
+              //launchDate: DateFormat("yyyy-MM-dd").parse(launchDate),
+              //checkDate: DateFormat("yyyy-MM-dd").parse(launchDate),
               owner: tokenProvider.member!
           );
 
@@ -215,9 +220,43 @@ class ShipRegister extends StatelessWidget {
             }),
 
             const SizedBox(height: 10,),
-            InputData(title: "진수일", text: launchDate, onChanged: (value) {
-              launchDate = value;
-            }),
+            // InputData(title: "진수일", text: launchDate, onChanged: (value) {
+            //   launchDate = value;
+            // }),
+            SizedBox(
+              height: 40,
+              child: Row(
+                children: [
+                  const Expanded(
+                      flex: 1,
+                      child: Center(
+                        child: Text(
+                          "진수일",
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      )),
+                  Expanded(
+                    flex: 2,
+                    child: SearchBar(
+                      controller: launchDateController,
+                      backgroundColor: getBackGroundColor(),
+                      trailing: [
+                        IconButton(
+                            onPressed: () {
+                              showDatePicker(context: context, firstDate: DateTime(1950), lastDate: DateTime(2050)).then((selected) {
+                                if (selected == null) return;
+                                launchDate = selected;
+                                launchDateController.text = DateFormat("yyyy-MM-dd").format(launchDate);
+                              });
+                            },
+                            icon: const Icon(Icons.date_range, color: Colors.deepPurple, size: 30,)
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ), // 진수일
 
             const SizedBox(height: 30,),
             Center(
