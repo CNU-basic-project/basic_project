@@ -1,3 +1,4 @@
+import 'package:basicfirebase/common/exception/reject_reservation_exception.dart';
 import 'package:basicfirebase/common/no_animation_route_button.dart';
 import 'package:basicfirebase/consumer/widget/ship_info_tile.dart';
 import 'package:basicfirebase/provider/notifier_provider.dart';
@@ -122,27 +123,27 @@ class ConsumerDepartureInfo extends StatelessWidget {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Constant.COLOR,
                   ),
-                  onPressed: () {
+                  onPressed: () async {
 
                     String text = "";
                     try {
                       text = "예약이";
                       if (reservation == null) {
-                        serviceProvider.reservationService.add(
+                        await serviceProvider.reservationService.add(
                             tokenProvider.token!, departure);
                       } else {
                         text = "취소가";
-                        serviceProvider.reservationService.delete(
+                        await serviceProvider.reservationService.delete(
                             tokenProvider.token!, reservation!);
                       }
-                    } catch (e) {
+                    } on RejectReservationException catch (e) {
                       showDialog(
                         barrierDismissible: false,
                         context: context,
                         builder: (ctx) {
                           return AlertDialog(
                             backgroundColor: Colors.white,
-                            content: const Text("해당 출항 기록이 삭제되었습니다."),
+                            content: Text(e.toString()),
                             actions: [
                               ElevatedButton(
                                 onPressed: () {
@@ -166,6 +167,7 @@ class ConsumerDepartureInfo extends StatelessWidget {
                       context: context,
                       builder: (ctx) {
                         return AlertDialog(
+                          backgroundColor: Colors.white,
                           content: Text("${departure.ship.name}의 $text 완료됐습니다."),
                           actions: [
                             Center(
