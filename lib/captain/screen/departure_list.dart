@@ -71,7 +71,7 @@ class _DepartureList extends State<DepartureList> {
                     height: MediaQuery
                         .of(context)
                         .size
-                        .height - 150,
+                        .height - preferredSize - 100,
                     child: FutureBuilder(
                       future: serviceProvider.departureService.findAllByShip(
                           widget.ship),

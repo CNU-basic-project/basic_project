@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:basicfirebase/common/API.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 
 class HttpService {
 
@@ -30,7 +31,6 @@ class HttpService {
       },
       body: jsonEncode(body)
     );
-
     if (response.statusCode >= 400) {
       throw HttpServiceException(response);
     }
@@ -52,8 +52,7 @@ class HttpService {
       return resData;
     }
     if (response.statusCode == 201) {
-      print(jsonDecode(utf8.decode(response.bodyBytes)));
-      return {};
+      return response.headers;
     }
 
     throw HttpServiceException(response);
@@ -87,6 +86,28 @@ class HttpService {
 
     if (response.statusCode >= 400) {
       throw HttpServiceException(response);
+    }
+  }
+
+  static Future<void> uploadFile(XFile file, String path, String name) async {
+    final url = Uri.parse(IMAGE_UPLOAD_ENDPOINT + path);
+    final request = http.MultipartRequest('PUT', url);
+    request.files.add(await http.MultipartFile.fromPath(
+      'file',
+      file.path,
+      filename: name,
+    ));
+
+    try {
+      final response = await request.send();
+
+      if (response.statusCode == 200) {
+        print('File uploaded successfully');
+      } else {
+        print('File upload failed with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('File upload failed: $e');
     }
   }
 }

@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:path/path.dart' as p;
 
 import '../../common/appbar.dart';
 import '../../common/constant.dart';
@@ -35,9 +36,9 @@ class _ShipRegisterState extends State<ShipRegister> {
   late TokenProvider tokenProvider;
   late NotifierProvider notifierProvider;
 
-  WidgetStateProperty<Color?> getBackGroundColor() {
-    return WidgetStateProperty.resolveWith<Color?>(
-            (Set<WidgetState> states) {
+  MaterialStateProperty<Color?> getBackGroundColor() {
+    return MaterialStateProperty.resolveWith<Color?>(
+            (Set<MaterialState> states) {
           return const Color.fromRGBO(0xD9, 0xD9, 0xD9, 1);
         }
     );
@@ -103,7 +104,7 @@ class _ShipRegisterState extends State<ShipRegister> {
               speed : int.parse(speed),
               seats : int.parse(seats),
               name : name,
-              imagePath: BASIC_IMAGE_PATH,
+              imagePath: widget.ship == null ? BASIC_IMAGE_PATH : widget.ship!.imagePath,
               type : type,
               weight: double.parse(weight),
               length: double.parse(length),
@@ -117,10 +118,19 @@ class _ShipRegisterState extends State<ShipRegister> {
           );
 
           if (widget.ship == null) {
-            await serviceProvider.shipService.add(tokenProvider.token!, newShip);
+            String location = await serviceProvider.shipService.add(tokenProvider.token!, newShip);
+            location = location.replaceAll("/ship/", "");
+            if (_image != null) {
+              await serviceProvider.shipService.putFile(_image!, location);
+              newShip.imagePath = "$IMAGE_ENDPOINT/ship$location${p.extension(_image!.path)}";
+            }
           } else {
-            await serviceProvider.shipService.update(tokenProvider.token!, newShip);
+            if (_image != null) {
+              await serviceProvider.shipService.putFile(_image!, widget.ship!.id.toString());
+              newShip.imagePath = "$IMAGE_ENDPOINT/ship${widget.ship!.id}${p.extension(_image!.path)}";
+            }
           }
+          await serviceProvider.shipService.update(tokenProvider.token!, newShip);
           notifierProvider.render();
           if (context.mounted) Navigator.pop(context);
 
@@ -331,7 +341,7 @@ class _ShipRegisterState extends State<ShipRegister> {
                           decoration: BoxDecoration(
                             color: const Color.fromRGBO(0xD9, 0xD9, 0xD9, 1),
                             borderRadius: BorderRadius.circular(30),
-                            image: widget.ship == null ? null :  DecorationImage(
+                            image: widget.ship == null || _image != null ? null :  DecorationImage(
                                 fit: BoxFit.fill,
                                 image: serviceProvider.getImage(widget.ship!.imagePath)
                             ),
@@ -346,7 +356,7 @@ class _ShipRegisterState extends State<ShipRegister> {
                           ),
                           child: _image == null ? (widget.ship == null ? const Center(child: Icon(Icons.add_a_photo_outlined, color: Colors.black))
                                 : null)
-                              : Image.file(File(_image!.path)),
+                              : Image.file(File(_image!.path), fit: BoxFit.fill,),
                           ),
                         ),
                       ),
