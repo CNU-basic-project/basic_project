@@ -32,7 +32,6 @@ class HttpService {
     );
 
     if (response.statusCode >= 400) {
-      print(utf8.decode(response.bodyBytes));
       throw HttpServiceException(response);
     }
   }
@@ -51,6 +50,10 @@ class HttpService {
     if (response.statusCode == 200) {
       Map<String, dynamic> resData = jsonDecode(utf8.decode(response.bodyBytes));
       return resData;
+    }
+    if (response.statusCode == 201) {
+      print(jsonDecode(utf8.decode(response.bodyBytes)));
+      return {};
     }
 
     throw HttpServiceException(response);

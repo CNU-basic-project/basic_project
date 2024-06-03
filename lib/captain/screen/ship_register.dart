@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:basicfirebase/captain/widget/input_data.dart';
 import 'package:basicfirebase/common/API.dart';
 import 'package:basicfirebase/common/no_animation_route_button.dart';
@@ -5,6 +7,7 @@ import 'package:basicfirebase/provider/notifier_provider.dart';
 import 'package:basicfirebase/provider/service_provider.dart';
 import 'package:basicfirebase/provider/token_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -13,11 +16,20 @@ import '../../common/constant.dart';
 import '../../domain/ship.dart';
 import 'departure_list.dart';
 
-class ShipRegister extends StatelessWidget {
+class ShipRegister extends StatefulWidget {
 
   final Ship? ship;
 
   ShipRegister({super.key, required this.ship});
+
+  @override
+  State<ShipRegister> createState() => _ShipRegisterState();
+}
+
+class _ShipRegisterState extends State<ShipRegister> {
+
+  XFile? _image;
+  final ImagePicker picker = ImagePicker();
 
   late ServiceProvider serviceProvider;
   late TokenProvider tokenProvider;
@@ -29,6 +41,15 @@ class ShipRegister extends StatelessWidget {
           return const Color.fromRGBO(0xD9, 0xD9, 0xD9, 1);
         }
     );
+  }
+
+  Future getImage(ImageSource imageSource) async {
+    final XFile? pickedFile = await picker.pickImage(source: imageSource);
+    if (pickedFile != null) {
+      setState(() {
+        _image = XFile(pickedFile.path);
+      });
+    }
   }
 
   String speed = "", seats = ""; // int
@@ -54,11 +75,11 @@ class ShipRegister extends StatelessWidget {
     tokenProvider = context.read<TokenProvider>();
     notifierProvider = context.read<NotifierProvider>();
 
-    if (ship != null) {
-      speed = ship!.speed.toString(); seats = ship!.seats.toString(); // int
-      name = ship!.name; imagePath = ship!.imagePath; type = ship!.type; // String
-      weight = ship!.weight.toString(); length = ship!.length.toString(); width = ship!.width.toString(); height = ship!.height.toString(); // double
-      launchDate = ship!.launchDate;
+    if (widget.ship != null) {
+      speed = widget.ship!.speed.toString(); seats = widget.ship!.seats.toString(); // int
+      name = widget.ship!.name; imagePath = widget.ship!.imagePath; type = widget.ship!.type; // String
+      weight = widget.ship!.weight.toString(); length = widget.ship!.length.toString(); width = widget.ship!.width.toString(); height = widget.ship!.height.toString(); // double
+      launchDate = widget.ship!.launchDate;
       //launchDate = DateFormat("yyyy-MM-dd").format(ship!.launchDate); //
     }
 
@@ -78,7 +99,7 @@ class ShipRegister extends StatelessWidget {
           }
 
           Ship newShip = Ship(
-              id : ship == null ? 0 : ship!.id,
+              id : widget.ship == null ? 0 : widget.ship!.id,
               speed : int.parse(speed),
               seats : int.parse(seats),
               name : name,
@@ -89,13 +110,13 @@ class ShipRegister extends StatelessWidget {
               width: double.parse(width),
               height: double.parse(height),
               launchDate: launchDate,
-              checkDate: ship == null ? launchDate : ship!.checkDate,
+              checkDate: widget.ship == null ? launchDate : widget.ship!.checkDate,
               //launchDate: DateFormat("yyyy-MM-dd").parse(launchDate),
               //checkDate: DateFormat("yyyy-MM-dd").parse(launchDate),
               owner: tokenProvider.member!
           );
 
-          if (ship == null) {
+          if (widget.ship == null) {
             await serviceProvider.shipService.add(tokenProvider.token!, newShip);
           } else {
             await serviceProvider.shipService.update(tokenProvider.token!, newShip);
@@ -104,9 +125,9 @@ class ShipRegister extends StatelessWidget {
           if (context.mounted) Navigator.pop(context);
 
         },
-        child: Text(ship == null ? "등록" : "수정", style: const TextStyle(color: Colors.white),),
+        child: Text(widget.ship == null ? "등록" : "수정", style: const TextStyle(color: Colors.white),),
       );
-      if (ship == null) {
+      if (widget.ship == null) {
         return elevatedButton;
       }
       return Row(
@@ -116,7 +137,7 @@ class ShipRegister extends StatelessWidget {
           ElevatedButton(style: ElevatedButton.styleFrom(backgroundColor: Constant.COLOR), onPressed: () {
             Navigator.push(
               context,
-              NoAnimationRouteBuilder(builder: (builder) => DepartureList(ship: ship!))
+              NoAnimationRouteBuilder(builder: (builder) => DepartureList(ship: widget.ship!))
             );
           }, child: const Text("출항", style: TextStyle(color: Colors.white)),
           ),
@@ -128,11 +149,11 @@ class ShipRegister extends StatelessWidget {
               builder: (ctx) {
                 return AlertDialog(
                   backgroundColor: Colors.white,
-                  content: Text("정말로 [${ship!.name}] 삭제하겠습니까?"),
+                  content: Text("정말로 [${widget.ship!.name}] 삭제하겠습니까?"),
                   actions: [
                     ElevatedButton(
                       onPressed: () async {
-                        await serviceProvider.shipService.delete(tokenProvider.token!, ship!);
+                        await serviceProvider.shipService.delete(tokenProvider.token!, widget.ship!);
                         notifierProvider.render();
                         if (ctx.mounted) Navigator.pop(ctx);
                         if (context.mounted) Navigator.pop(context);
@@ -257,6 +278,81 @@ class ShipRegister extends StatelessWidget {
                 ],
               ),
             ), // 진수일
+
+            const SizedBox(height: 10,),
+            SizedBox(
+              height: 120,
+              child: Row(
+                children: [
+                  const Expanded(
+                      flex: 1,
+                      child: Center(
+                        child: Center(
+                          child: Text(
+                            "사진",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      )),
+                  Expanded(
+                      flex: 2,
+                      child: GestureDetector(
+                        onTap: () {
+                          showDialog(context: context, builder: (builder) {
+                            return AlertDialog(
+                              backgroundColor: Colors.white,
+                              content: const Text("사진을 가져올 방법을 선택하세요."),
+                              actions: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    getImage(ImageSource.camera);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Constant.COLOR
+                                  ),
+                                  child: const Text("카메라", style: TextStyle(color: Colors.white),),
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                    getImage(ImageSource.gallery);
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: Constant.COLOR
+                                  ),
+                                  child: const Text("갤러리", style: TextStyle(color: Colors.white),),
+                                ),
+                              ],
+                            );
+                          });
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: const Color.fromRGBO(0xD9, 0xD9, 0xD9, 1),
+                            borderRadius: BorderRadius.circular(30),
+                            image: widget.ship == null ? null :  DecorationImage(
+                                fit: BoxFit.fill,
+                                image: serviceProvider.getImage(widget.ship!.imagePath)
+                            ),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color.fromRGBO(0xD9, 0xD9, 0xD9, 1),
+                                spreadRadius: 2,
+                                blurRadius: 7,
+                                offset: Offset(0, 3), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                          child: _image == null ? (widget.ship == null ? const Center(child: Icon(Icons.add_a_photo_outlined, color: Colors.black))
+                                : null)
+                              : Image.file(File(_image!.path)),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
 
             const SizedBox(height: 30,),
             Center(

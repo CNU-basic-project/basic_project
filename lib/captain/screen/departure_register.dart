@@ -283,56 +283,6 @@ class _DepartureRegisterState extends State<DepartureRegister> {
               ),
             ), // 가격 1매
 
-            const SizedBox(height: 10,),
-            SizedBox(
-              height: 120,
-              child: Row(
-                children: [
-                  const Expanded(
-                      flex: 1,
-                      child: Center(
-                        child: Center(
-                          child: Text(
-                            "사진",
-                            style: TextStyle(fontSize: 16),
-                          ),
-                        ),
-                      )),
-                  Expanded(
-                      flex: 2,
-                      child: GestureDetector(
-                        onTap: () {
-
-                        },
-                        child: Container(
-                            child: Center(
-                              child: IconButton(
-                                onPressed: () {
-                                  // TODO button 갤러리 or 카메라
-                                  return;
-                                },
-                                icon: const Icon(Icons.add_a_photo_outlined, color: Colors.black),
-                              ),
-                            ),
-                            decoration: BoxDecoration(
-                              color: const Color.fromRGBO(0xD9, 0xD9, 0xD9, 1),
-                              borderRadius: BorderRadius.circular(30),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Color.fromRGBO(0xD9, 0xD9, 0xD9, 1),
-                                  spreadRadius: 2,
-                                  blurRadius: 7,
-                                  offset: Offset(0, 3), // changes position of shadow
-                                ),
-                              ],
-                            ),
-                        ),
-                      )
-                  ),
-                ],
-              ),
-            ), // TODO 사진을 ship_register로
-
             const SizedBox(height: 30,),
             Center(
               child: ElevatedButton(
