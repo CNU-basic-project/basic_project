@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:basicfirebase/common/exception/reject_reservation_exception.dart';
 import 'package:basicfirebase/common/no_animation_route_button.dart';
+import 'package:basicfirebase/consumer/screen/departure_detail.dart';
 import 'package:basicfirebase/consumer/widget/ship_info_tile.dart';
 import 'package:basicfirebase/provider/notifier_provider.dart';
 import 'package:basicfirebase/provider/service_provider.dart';
@@ -70,14 +73,16 @@ class ConsumerDepartureInfo extends StatelessWidget {
                   ),
                 ),
                 onTap: () {
-                  // TODO Navigate to Detail Page (probability) using Function
+                  // TODO probability hard cording
+                  Navigator.push(context, NoAnimationRouteBuilder(builder: (builder) => DepartureDetail(departure: departure, probability: Random().nextInt(100),)));
                 },
               ),
               const SizedBox(height: 10,),
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    // TODO Navigate to Detail Page (probability) using Function
+                    // TODO probability hard cording
+                    Navigator.push(context, NoAnimationRouteBuilder(builder: (builder) => DepartureDetail(departure: departure, probability: Random().nextInt(100),)));
                   },
                   child: Column(
                     children: [
