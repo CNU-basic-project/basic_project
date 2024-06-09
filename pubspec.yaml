@@ -80,6 +80,7 @@ flutter:
     - assets/info.png
     - assets/basic_profile.png
     - assets/route.png
+    - assets/place.json
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -73,16 +73,14 @@ class ConsumerDepartureInfo extends StatelessWidget {
                   ),
                 ),
                 onTap: () {
-                  // TODO probability hard cording
-                  Navigator.push(context, NoAnimationRouteBuilder(builder: (builder) => DepartureDetail(departure: departure, probability: Random().nextInt(100),)));
+                  Navigator.push(context, NoAnimationRouteBuilder(builder: (builder) => DepartureDetail(departure: departure)));
                 },
               ),
               const SizedBox(height: 10,),
               Center(
                 child: GestureDetector(
                   onTap: () {
-                    // TODO probability hard cording
-                    Navigator.push(context, NoAnimationRouteBuilder(builder: (builder) => DepartureDetail(departure: departure, probability: Random().nextInt(100),)));
+                    Navigator.push(context, NoAnimationRouteBuilder(builder: (builder) => DepartureDetail(departure: departure)));
                   },
                   child: Column(
                     children: [
